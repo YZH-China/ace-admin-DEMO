@@ -1,0 +1,22 @@
+div(tabindex="-1",role="dialog",aria-labellebby="title-success",aria-hidden="true",data-backdrop="false",data-keyboard="true").modal.fade#modal-success
+	div.modal-dialog
+		div.modal-content
+			div.modal-body.center#modal-success-body
+				h3.text-success.bigger-110
+					| 恭喜您！注册成功！
+			div.modal-footer.center#modal-success-footer
+				div.toolbar
+					a(href="#",data-target="#login-box",role="button",data-dismiss="modal").back-to-login-link.btn.btn-success
+						i.ace-icon.fa.fa-arrow-left
+						| &nbsp; 去登陆
+div(tabindex="-1",role="dialog",aria-labellebby="title-success",aria-hidden="true",data-backdrop="false",data-keyboard="true").modal.fade#modal-failed
+	div.modal-dialog
+		div.modal-content
+			div.modal-body.center
+				h3.text-success.bigger-110
+					| 很遗憾！注册失败！请重试！
+			div.modal-footer.center
+				div.toolbar
+					a(href="#",role="button",data-dismiss="modal").back-to-login-link.btn.btn-info
+						i.ace-icon.fa.fa-arrow-left
+						| &nbsp; 确认

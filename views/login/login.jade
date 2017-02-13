@@ -1,0 +1,154 @@
+extends ../layout
+
+block content
+	body.login-layout.blur-login(style={'font-family':"Microsoft YaHei,微软雅黑,MicrosoftJhengHei,华文细黑,STHeiti,MingLiu"})
+		div.main-container
+			div.main-content
+				div.row
+					div.col-sm-10.col-sm-offset-1
+						div.login-container
+							div.center
+								h1
+									i.ace-icon.fa.fa-leaf.green
+									span.red(style={margin:'0 10px'}) Ace
+									span.white#id-text2 Application
+								h4.blue#id-company-text 中国电信四川服务
+							div.space-6
+							div.position-relative
+								div.login-box.visible.widget-box.no-border#login-box
+									div.widget-body
+										div.widget-main
+											h4.header.blue.lighter.bigger
+												i.ace-icon.fa.fa-coffee.green
+												| 请输入登录信息
+											div.space-6
+											form
+												div.form-group
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="text",placeholder="用户名").form-control#username-login
+															i.ace-icon.fa.fa-user
+												div.form-group
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="password",placeholder="密码").form-control#password-login
+															i.ace-icon.fa.fa-lock
+												div.space
+												div.form-group
+													div.clearfix
+														label.inline
+															input(type="checkbox").ace
+															span.lbl 记住我
+														button(type="button").width-35.pull-right.btn.btn-primary.btn-sm#btn-login
+															i.ace-icon.fa.fa-key
+															span.bigger-110 登录
+											div.social-or-login.center
+												span.bigger-110 使用下列账号登录
+											div.space-6
+											div.social-login.center
+												a.btn.btn-primary#facebook
+													i.ace-icon.fa.fa-facebook
+												a.btn.btn-info
+													i.ace-icon.fa.fa-twitter
+												a.btn.btn-danger
+													i.ace-icon.fa.fa-google-plus
+										div.toolbar.clearfix
+											div
+												a(href="#",data-target="#forgot-box").forgot-password-link
+													i.ace-icon.fa.fa-arrow-left
+													| &nbsp; 忘记密码
+											div
+												a(href="#",data-target="#signup-box").user-signup-link
+													| 立即注册 &nbsp;
+													i.ace-icon.fa.fa-arrow-right
+								div.forgot-box.widget-box.no-border#forgot-box
+									div.widget-body
+										div.widget-main
+											h4.header.red.lighter.bigger
+												i.ace-icon.fa.fa-key
+												| 找回密码
+											div.space-6
+											p 输入您的邮箱并确认信息
+											form
+												fieldset
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="text",placeholder="Email").form-control
+															i.ace-icon.fa.fa-envelope
+													div.clearfix
+														button(type="button").width-35.pull-right.btn.btn-sm.btn-danger
+															i.ace-icon.fa.fa-lightblub-0
+															span.bigger-110 发送
+										div.toolbar.center
+											a(href="#",data-target="#login-box").back-to-login-link
+												| 返回登录
+												i.ace-icon.fa.fa-arrow-right
+								div.signup-box.widget-box.no-border#signup-box
+									div.widget-body
+										div.widget-main
+											h4.header.green.lighter.bigger
+												i.ace-icon.fa.fa-users.blue
+												| 用户注册
+											div.space-6
+											p 输入您的注册信息:
+											form
+												div.form-group
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="email",placeholder="邮箱").form-control#u_email
+															i.ace-icon.fa.fa-envelope
+												div.form-group
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="text",placeholder="用户名").form-control#username
+															i.ace-icon.fa.fa-user
+												div.form-group
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="password",placeholder="密码").form-control#password
+															i.ace-icon.fa.fa-lock
+												div.form-group
+													label.block.clearfix
+														span.block.input-icon.input-icon-right
+															input(type="password",placeholder="重复密码").form-control#re_password
+															i.ace-icon.fa.fa-retweet
+												div.form-group
+													label.block
+														input(type="checkbox").ace#reg-agreement
+														span.lbl
+															| 我同意
+															a(href="#") &nbsp; 《用户协议》
+													div.space-24
+													div.clearfix
+														button(type="button").width-30.pull-left.btn.btn-sm#reg-reset
+															i.ace-icon.fa.fa-refresh
+															span.bigger-110 重置
+														button(type="button").width-65.pull-right.btn.btn-sm.btn-success#btn-register
+															span.bigger-110 注册
+															i.ace-icon.fa.fa-arrow-right
+										div.toolbar.center
+											a(href="#",data-target="#login-box").back-to-login-link#reg-to-log
+												i.ace-icon.fa.fa-arrow-left
+												| &nbsp; 返回登录
+							div.navbar-fixed-top.align-right
+								br
+								&nbsp;
+								a#btn-login-dark(href="#") Dark
+								&nbsp;
+								span.blue /
+								&nbsp;
+								a#btn-login-blur(href="#") Blur
+								&nbsp;
+								span.blue /
+								&nbsp;
+								a#btn-login-light(href="#") Light
+								&nbsp;&nbsp;&nbsp;
+				div(style={display:"none"}).row#reg-info
+					div.col-sm-10.col-sm-offset-1
+						div.login-container
+							div.alert.alert-danger
+								strong
+									i.ace-icon.fa.fa-times
+		block modail
+			include ../notice.jade
+	script(src="./javascripts/login.js")
