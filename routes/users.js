@@ -17,7 +17,7 @@ router.post('/register', function(req, res, next){
 //登录检查
 router.post('/login', function(req, res, next){
 	userServer.login(req.body, function(data){
-		res.send(data);
+		res.send(data.toString());
 	})
 })
 

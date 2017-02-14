@@ -12,10 +12,20 @@ module.exports.userRegister = function(values, callback){
 
 module.exports.login = function(values, callback){
 	userDao.login(values, function(rel){
-		if(rel.length == 0){
-			callback(false);
+		if(rel.length){
+			callback(rel[0].id);
 		} else {
-			callback(true);
+			callback(0);
 		}
 	})
 };
+
+module.exports.getUserById = function(id, callback){
+	userDao.getUserById(id, function(rel){
+		if(rel.length){
+			callback(rel[0]);
+		} else {
+			callback(false);
+		}
+	})
+}

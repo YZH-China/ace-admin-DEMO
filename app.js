@@ -7,8 +7,10 @@ var bodyParser = require('body-parser');
 
 require("./dao/database-connect.js");
 
-var index = require('./routes/index');
+var home = require('./routes/home');
 var users = require('./routes/users');
+var staff = require("./routes/staff.js");
+var commodity = require("./routes/commodity.js");
 
 var app = express();
 
@@ -26,6 +28,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', users);
 app.use('/users', users);
+app.use('/home', home);
+app.use('/staff', staff);
+app.use('/commodity', commodity);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

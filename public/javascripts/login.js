@@ -45,6 +45,9 @@ jQuery(function($) {
 		},
 		agreementMsg: {
 			notChecked: "请先阅读《用户协议》！"
+		},
+		loginMsg:{
+			notMatching: "错误！ &nbsp; 用户名与密码不匹配！"
 		}
 	};
 
@@ -281,6 +284,11 @@ jQuery(function($) {
 					data:{username:login.username, password:login.password},
 					success: function(data){
 						console.log(data);
+						if(~~data !== 0){
+							location.href = "http://127.0.0.1:3000/home?id=" + data;
+						} else {
+							slideDown(errorMsg.loginMsg.notMatching);
+						}
 					}
 				})
 			} else {

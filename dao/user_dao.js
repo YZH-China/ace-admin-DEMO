@@ -13,4 +13,11 @@ module.exports.login = function(values, callback){
 	queryMethod.query(sql, arr_values, function(results){
 		callback(results);
 	})
+};
+
+module.exports.getUserById = function(id, callback){
+	var sql = "select * from user where ?"
+	queryMethod.query(sql, id, function(rel){
+		callback(rel);
+	})	
 }

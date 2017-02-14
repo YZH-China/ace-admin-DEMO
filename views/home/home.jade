@@ -1,13 +1,69 @@
-extends layout
+extends ../layout
 
 block content
 	body.no-skin
-		div.navbar#navbar
+		div.navbar.navbar-default#navbar
+			div.navbar-container
+				button.navbar-toggle.menu-toggler.pull-left.fixed#menu-toggler(type="button")
+					span.sr-only Toggle sidebar
+					span.icon-bar
+					span.icon-bar
+					span.icon-bar
+				div.navbar-header.pull-left
+					a(href="javascript:void(0)").navbar-brand
+						small
+							i.ace-icon.fa.fa-leaf 一个AceAdmin Demo
+				div.navbar-buttons.pull-right.navbar-header(role="navigation")
+					ul.nav.ace-nav
+						li.grey
+							a(data-toggle="dropdown",href="#").dropdown-toggle
+								img(src="http://127.0.0.1:3000/aceadmin/assets/avatars/user.jpg",alt="#{username}的头像").nav-user-photo
+								span.user-info
+									small 欢迎您！
+									| #{username}
+								i.ace-icon.fa.fa-caret-down
+							ul.user-menu.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-close.dropdown-menu-right
+								li
+									a(href="#")
+										i.ace-icon.fa.fa-cog
+										| 设置
+								li
+									a(href="#")
+										i.ace-icon.fa.fa-user
+										| 用户中心
+								li.divider
+								li
+									a(href="#")
+										i.ace-icon.fa.fa-power-off
+										| 注销
 		div.main-container#maincontainer
-			div.sidebar.responsive#sidebar
+			div.sidebar.responsive.sidebar-fixed#sidebar
+				div(style={'position':'relative'})
+					div.nav-wrap
+						div(style={'position':'relative','top':'0px','transition-property':'top','transition-duration':'0.2s'})
+							div.sidebar-shortcuts#sidebar-shortcuts
+								div.sidebar-shortcuts-large#sidebar-shortcuts-large
+									button.btn.btn-success
+										i.ace-icon.fa.fa-signal
+									button.btn.btn-info
+										i.ace-icon.fa.fa-pencil
+									button.btn.btn-warning
+										i.ace-icon.fa.fa-users
+									button.btn.btn-danger
+										i.ace-icon.fa.fa-cogs
+								div.sidebar-shortcuts-mini#sidebar-shortcuts-mini
+									span.btn.btn-success
+									span.btn.btn-info
+									span.btn.btn-warning
+									span.btn.btn-danger
+							block sidebar_list
+					div.ace-scroll.nav-scroll
+						div.scroll-track(style={'display':'none','height':'628px'})
+							div.scroll-bar(style={'height':'604px','top':'0px','transition-property':'top','transition-duration':'0.13s'})
+						div.scroll-content
+							div
+				div.sidebar-toggle.sidebar-collapse#sidebar-sollapse(style={'z-index':'1'})
+					i.ace-icon.fa.fa-angle-double-left(data-icon1="ace-icon fa fa-angle-double-left",data-icon2="ace-icon fa fa-angle-double-right")
 			div.main-content#main-content
-				div.breadcrumbs
-				div.page-content
-					div.row
-						div.col-xs-12
+				block main_content
 		script(src="http://127.0.0.1:3000/javascripts/home.js")
