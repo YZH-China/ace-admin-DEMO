@@ -3,7 +3,7 @@ extends ../home/home
 block sidebar_list
 	ul.nav.nav-list
 		li
-			a(href='/home?id=#{id}')
+			a(href='/home?id=#{user.id}')
 				i.menu-icon.glyphicon.glyphicon-home
 				span.menu-text.bigger-110 首页
 		li.hsub
@@ -13,7 +13,7 @@ block sidebar_list
 				b.arrow.fa.fa-angle-down
 			ul.submenu
 				li
-					a(href="/staff/list?id=#{id}")
+					a(href="/staff/list?id=#{user.id}")
 						i.menu-icon.fa.fa-caret-right
 						span.menu-text 员工列表
 				li
@@ -31,7 +31,7 @@ block sidebar_list
 				b.arrow.fa.fa-angle-down
 			ul.submenu
 				li.active
-					a(href="/commodity/list?id=#{id}")
+					a(href="/commodity/list?id=#{user.id}")
 						i.menu-icon.fa.fa-caret-right
 						span.menu-text 商品列表
 				li
@@ -56,3 +56,85 @@ block main_content
 	div.page-content
 		div.row
 			div.col-xs-12
+				h3.header.smaller.lighter.blue 商品数据表
+				div.table-header 所有商品详细信息
+				div
+					div#sample-table-2_wrapper.dataTables_wrapper.form-inline-no-footer
+						div.row
+							div.col-xs-6
+								div.dataTables_length#sample-table-2_length
+									label 显示 
+										select(name="sample-table-2_length",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
+											option(value="10") 10
+											option(value="25") 25
+											option(value="50") 50
+											option(value="100") 100
+										| 条数据
+							div.col-xs-6
+								div.sample-table-2_filter.dataTables_filter
+									label 查询：
+										input(type="search",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
+						table#sample-table-2.table.table-striped.table-bordered.table-hover.dataTable.no-footer(role="grid",aria-describedby="sample-table-2_info")
+							thead
+								tr(role="row")
+									th.center.sorting_disabled(rowspan="1",colspan="1",aria-label="")
+										label.position-relative
+											input(type="checkbox").ace
+											span.lbl
+									th.sorting(tabindex="0",aria-controls="sample-table-2",rowspan="1",colspan="1",aria-label="id: activate to sort column ascending") 编号
+									th.sorting(tabindex="0",aria-controls="sample-table-2",rowspan="1",colspan="1",aria-label="name: activate to sort column ascending") 商品名称
+									th.sorting(tabindex="0",aria-controls="sample-table-2",rowspan="1",colspan="1",aria-label="price: activate to sort column ascending") 商品单价
+									th.sorting_disabled(rowspan="1",colspan="1",aria-label="")
+							tbody
+								each commodity, index in commodities
+									- var odd_even = '';
+									if index % 2 === 0
+										- odd_even = 'even';
+									else
+										- odd_even = 'odd';
+									tr(role="row",class="#{odd_even}")
+										td.center
+											label.position-relative
+												input(type="checkbox").ace
+												span.lbl
+										td
+											| #{commodity.id}
+										td
+											| #{commodity.name}
+										td
+											| #{commodity.price}
+										td
+											div.hidden-sm.hidden-xs.action-buttons
+												a.blue(href="#")
+													i.ace-icon.fa.fa-search-plus.bigger-130
+												a.green(href="#")
+													i.ace-icon.fa.fa-pencil.bigger-130
+												a.red(href="#")
+													i.ace-icon.fa.fa-trash-o.bigger-130
+											div.hidden-md.hidden-lg
+												div.inline.position-relative
+													button.btn.btn-minier.btn-yellow.dropdown-toggle(data-toggle="dropdown",data-position="auto")
+													ul.dropdown-menu.dropdown-only-icon.dropdown-yellow.dropdown-menu-right.dropdown-caret.dropdown-close
+														li
+															a(href="#",data-rel="tooltip",title,data-original-title="View").tooltip-info
+																span.blue
+																	i.ace-icon.fa.fa-search-plus.bigger-120
+														li
+															a(href="#",data-rel="tooltip",title,data-original-title="Edit").tooltip-info
+																span.green
+																	i.ace-icon.fa.fa-pencil-square-o.bigger-120
+														li
+															a(href="#",data-rel="tooltip",title,data-original-title="Delete").tooltip-info
+																span.red
+																	i.ace-icon.fa.fa-trash-o.bigger-120
+						div.row
+							div.col-xs-6
+								div.dataTables_info#sample-table-2_info(role="status",aria-live="polite")
+									| 从#{commodities.length}个条目中，显示第1到第10条
+							div.col-xs-6
+								div.dataTables_paginate.pagin_simple_numbers#sapmle-table-2_paginate
+									ul.pagination
+										li.paginate_button.previous.disabled(aria-controls="sample-table-2",tabindex="0")#sample-table-2_previouse
+											a(href="#") 上一页
+										li.paginate_button.next(aria-controls="sample-table-2",tabindex="0")#sample-table-2_next
+											a(href="#") 下一页

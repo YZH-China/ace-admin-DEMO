@@ -3,7 +3,7 @@ extends home
 block sidebar_list
 	ul.nav.nav-list
 		li.active
-			a(href='/home?id=#{id}')
+			a(href='/home?id=#{user.id}')
 				i.menu-icon.glyphicon.glyphicon-home
 				span.menu-text.bigger-110 首页
 		li.hsub
@@ -13,7 +13,7 @@ block sidebar_list
 				b.arrow.fa.fa-angle-down
 			ul.submenu
 				li
-					a(href="/staff/list?id=#{id}")
+					a(href="/staff/list?id=#{user.id}")
 						i.menu-icon.fa.fa-caret-right
 						span.menu-text 员工列表
 				li
@@ -31,7 +31,7 @@ block sidebar_list
 				b.arrow.fa.fa-angle-down
 			ul.submenu
 				li
-					a(href="/commodity/list?id=#{id}")
+					a(href="/commodity/list?id=#{user.id}")
 						i.menu-icon.fa.fa-caret-right
 						span.menu-text 商品列表
 				li
@@ -52,3 +52,54 @@ block main_content
 	div.page-content
 		div.row
 			div.col-xs-12
+				div.row.center.text-info
+					h1 欢迎使用本系统
+				div.space-24
+				div.row
+					div.col-xs-6
+						h3.row.header.smaller.lighter.blue
+							span.col-xs-6 导视
+						div#accordion.accordion-style1.panel-group
+							div.panel.panel-default
+								div.panel-heading
+									h4.panel-title
+										a.accordion-toggle.collapsed(data-toggle="collapse",data-parent="#accordion",href="#collapseOne")
+											i.bigger-110.ace-icon.fa.fa-angle-right(data-icon-hide="ace-icon fa fa-angle-down",data-icon-show="ace-icon fa fa-angle-right")
+											| 员工管理
+								div.panel-collapse.collapse#collapseOne(style={'height':'0px'})
+									div.panel-body
+										| 包含员工管理相关操作
+							div.panel.panel-default
+								div.panel-heading
+									h4.panel-title
+										a.accordion-toggle.collapsed(data-toggle="collapse",data-parent="#accordion",href="#collapseTow")
+											i.bigger-110.ace-icon.fa.fa-angle-right(data-icon-hide="ace-icon fa fa-angle-down",data-icon-show="ace-icon fa fa-angle-right")
+											| 商品管理
+								div.panel-collapse.collapse#collapseTow(style={'height':'0px'})
+									div.panel-body
+										| 包含商品管理相关操作
+					div.col-xs-4.col-xs-offset-1
+						div.widget-box.widget-color-blue
+							div.widget-header.widget-header-flat
+								h4.widget-title 通知
+							div.widget-body
+								div.widget-main
+									div.row
+										div.col-xs-12
+											ul
+												li
+													strong
+														h4
+															a(href="#") 通知1
+												li
+													strong
+														h4
+															a(href="#") 通知2
+												li
+													strong
+														h4
+															a(href="#") 通知3
+												li
+													strong
+														h4
+															a(href="#") 通知4

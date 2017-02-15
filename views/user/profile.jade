@@ -1,0 +1,165 @@
+extends ../home/home
+
+block sidebar_list
+	ul.nav.nav-list
+		li
+			a(href='/home?id=#{user.id}')
+				i.menu-icon.glyphicon.glyphicon-home
+				span.menu-text.bigger-110 首页
+		li.hsub
+			a(href="#").dropdown-toggle
+				i.menu-icon.fa.fa-users
+				span.menu-text.bigger-110 员工管理
+				b.arrow.fa.fa-angle-down
+			ul.submenu
+				li
+					a(href="/staff/list?id=#{user.id}")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 员工列表
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 员工操作1
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 员工操作2
+		li.hsub
+			a(href="#").dropdown-toggle
+				i.menu-icon.fa.fa-gift
+				span.menu-text.bigger-110 商品管理
+				b.arrow.fa.fa-angle-down
+			ul.submenu
+				li
+					a(href="/commodity/list?id=#{user.id}")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 商品列表
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 商品操作1
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 商品操作2
+
+block main_content
+	div.breadcrumbs.breadcrumbs-fixed#breadcrumbs
+		ul.breadcrumb
+			li
+				i.ace-icon.fa.fa-user.bigger-110
+				| &nbsp; 用户中心
+	div.page-content
+		div.page-content-area
+			div.page-header
+				h1 用户中心
+					small
+						i.ace-icon.fa.fa-angle-double-right
+						| &nbsp; 查看用户信息
+			div.row
+				div.col-xs-12
+					div#user-profile-2.user-profile
+						div.tabbable
+							ul.nav.nav-tabs.padding-18
+								li.active
+									a(data-toggle="tab",href="#home")
+										i.green.ace-icon.fa.fa-user.bigger-120
+										| 个人详情
+								li
+									a(data-toggle="tab",href="#feed")
+										i.orange.ace-icon.fa.fa-rss.bigger-120
+										| 活动提要
+								li
+									a(data-toggle="tab",href="#pictures")
+										i.blue.ace-icon.fa.fa-picture-o.bigger-120
+										| 相册
+								li
+									a(data-toggle="tab",href="#friends")
+										i.pink.ace-icon.fa.fa-users.bigger-120
+										| 朋友
+							div.tab-content.no-border.padding-24
+								div#home.tab-pane.active
+									div.row
+										div.col-xs-12.col-sm-3.center
+											span.profile-picture
+												img#avatar2.editable.img-responsive(src="http://127.0.0.1:3000/aceadmin/assets/avatars/profile-pic.jpg",alt="#{user.username} 的头像",widht="120%",height="120%")
+											div.space-6
+											a(href="#").btn.btn-success.btn-sm.btn-block
+												i.ace-icon.fa.fa-plus-circle.bigger-120
+												span.bigger-110 完善信息
+											a(href="#").btn.btn-primary.btn-sm.btn-block
+												i.ace-icon.fa.fa-envelope-o.bigger-110
+												span.bigger-110 写邮件
+											div.space-4
+											span
+												if user.gender
+													if user.gender == 1
+														i.ace-icon.fa.fa-male.bigger-200.blue
+													else if user.gender == 2
+														i.ace-icon.fa.fa-female.bigger-200.red
+												else
+													i.ace-icon.fa.fa-male.bigger-200.blue
+													span.bigger-150 &nbsp; ? &nbsp;
+													i.ace-icon.fa.fa-female.bigger-200.red
+										div.col-xs-12.col-sm-9
+											h4.blue
+												span.middle #{user.niconame}
+												span.label.label-purple.arrowed-in-right
+													i.ace-icon.fa.fa-circle.smaller-80.align-middle
+													| online
+											div.profile-user-info
+												div.profile-info-row
+													div.profile-info-name 用户名
+													div.profile-info-value
+														span #{user.username}
+												div.profile-info-row
+													div.profile-info-name 地址
+													div.profile-info-value
+														span #{user.location}
+												div.profile-info-row
+													div.profile-info-name 年龄
+													div.profile-info-value
+														span #{user.birthday}
+												div.profile-info-row
+													div.profile-info-name 注册时间
+													div.profile-info-value
+														- var reg_date = new Date(user.reg_date)
+														span= reg_date.getFullYear() + '-' + reg_date.getMonth() + '-' + reg_date.getDate()
+											div.hr.hr-8.dashed
+											div.profile-user-info
+												div.profile-info-row
+													div.profile-info-name 邮箱
+													div.profile-info-value
+														span #{user.email}
+												div.profile-info-row
+													div.profile-info-name Facebook
+													div.profile-info-value
+														span #{user.facebook}
+												div.profile-info-row
+													div.profile-info-name twitter
+													div.profile-info-value
+														span #{user.twitter}
+												div.profile-info-row
+													div.profile-info-name google
+													div.profile-info-value
+														span #{user.google}
+									div.row
+										div.col-xs-12.col-sm-3
+										div.col-xs-12.col-sm-9
+											div.widget-box.transparent
+												div.widget-header.widget-header-small
+													h4.widget-title.smaller
+														i.ace-icon.fa.fa-check-square-o.bigger-110
+														| 关于我
+												div.widget-body
+													div.widget-main
+														if user.comment
+															pre= user.comment
+														else
+															pre 暂无介绍
+								div#feed.tab-pane
+									h1 feed
+								div#pictures.tab-pane
+									h1 pictrues
+								div#friends.tab-pane
+									h1 friends

@@ -17,18 +17,18 @@ block content
 					ul.nav.ace-nav
 						li.grey
 							a(data-toggle="dropdown",href="#").dropdown-toggle
-								img(src="http://127.0.0.1:3000/aceadmin/assets/avatars/user.jpg",alt="#{username}的头像").nav-user-photo
+								img(src="http://127.0.0.1:3000/aceadmin/assets/avatars/user.jpg",alt="#{user.username}的头像").nav-user-photo
 								span.user-info
 									small 欢迎您！
-									| #{username}
+									| #{user.username}
 								i.ace-icon.fa.fa-caret-down
 							ul.user-menu.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-close.dropdown-menu-right
 								li
-									a(href="#")
+									a(href="/users/setting?id=#{user.id}")
 										i.ace-icon.fa.fa-cog
 										| 设置
 								li
-									a(href="#")
+									a(href="/users/profile?id=#{user.id}")
 										i.ace-icon.fa.fa-user
 										| 用户中心
 								li.divider
@@ -66,4 +66,3 @@ block content
 					i.ace-icon.fa.fa-angle-double-left(data-icon1="ace-icon fa fa-angle-double-left",data-icon2="ace-icon fa fa-angle-double-right")
 			div.main-content#main-content
 				block main_content
-		script(src="http://127.0.0.1:3000/javascripts/home.js")

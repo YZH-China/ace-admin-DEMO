@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require("express-session");
 
 require("./dao/database-connect.js");
 
@@ -25,6 +26,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+resave: true, // don't save session if unmodified
+saveUninitialized: false, // don't create session until something stored
+cookie: {maxAge: 60 * 1000 * 30},
+secret: 'love'
+}));
 
 app.use('/', users);
 app.use('/users', users);

@@ -1,0 +1,116 @@
+extends ../home/home
+
+block sidebar_list
+	ul.nav.nav-list
+		li
+			a(href='/home?id=#{user.id}')
+				i.menu-icon.glyphicon.glyphicon-home
+				span.menu-text.bigger-110 首页
+		li.hsub
+			a(href="#").dropdown-toggle
+				i.menu-icon.fa.fa-users
+				span.menu-text.bigger-110 员工管理
+				b.arrow.fa.fa-angle-down
+			ul.submenu
+				li
+					a(href="/staff/list?id=#{user.id}")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 员工列表
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 员工操作1
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 员工操作2
+		li.hsub
+			a(href="#").dropdown-toggle
+				i.menu-icon.fa.fa-gift
+				span.menu-text.bigger-110 商品管理
+				b.arrow.fa.fa-angle-down
+			ul.submenu
+				li
+					a(href="/commodity/list?id=#{user.id}")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 商品列表
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 商品操作1
+				li
+					a(href="#")
+						i.menu-icon.fa.fa-caret-right
+						span.menu-text 商品操作2
+
+block main_content
+	div.breadcrumbs.breadcrumbs-fixed#breadcrumbs
+		ul.breadcrumb
+			li
+				i.ace-icon.fa.fa-user.bigger-110
+				| &nbsp; 用户中心
+			li.active
+				| 设置
+	div.page-content
+		div.page-content-area
+			div.page-header
+				h1 设置
+					small
+						i.ace-icon.fa.fa-angle-double-right
+						| &nbsp; 编辑用户信息
+			div.row
+				div.col-xs-12
+					div#user-profile-3.user-profile.row
+						div.col-sm-offset-1.col-sm-10
+							div.well.well-sm
+								div.inline.middle.blue.bigger-110(style={'margin':'0 25px 0 25px'})
+									| 已完成70%
+								div(style={'width':'200px'},data-percent="70%").inline.middle.no-margin.progress.progress-striped.active
+									div.progress-bar.progress-bar-success(style={'width':'70%'})
+							div.space
+							div.form-horizontal
+								div.tabbable
+									ul.nav.nav-tabs.padding-16
+										li.active
+											a(href="#edit-basic",data-toggle="tab")
+												i.ace-icon.fa.fa-pencil-square-o.bigger-125.green
+												| 基本信息
+										li
+											a(href='#edit-password',data-toggle="tab")
+												i.ace-icon.fa.fa-key.blue.bigger-125
+												| 修改密码
+									div.tab-content.profile-edit-tab-content
+										div#edit-basic.tab-pane.in.active
+											div.row
+												div.col-md-4.col-sm-12
+													h4.header.blue.bolder.smaller 常规信息
+													div.row
+														div.col-xs-12
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-niconame") 昵称：
+																div.col-xs-9
+																	input.col-xs-12(type="text",placeholder="请输入昵称",value="#{user.niconame}")#form-field-niconame
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-birthday") 出生日期：
+																div.col-xs-9
+																	div.input-group
+																		- var birthday = user.birthday ? user.birthday : ''
+																		input.col-xs-12.date-picker.input.middle#form-field-birthday(type="date",placeholder="请选择日期",value="#{birthday}",data-date-format="yyyy-mm-dd")
+																		span.input-group-addon
+																			i.ace-icon.fa.fa-calendar
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-niconame") 性别：
+																div.col-xs-9
+																	label.inline
+																		input(name="form-field-radio",type="radio",value="1").ace
+																		span.lbl.middle
+																			| 男
+																	span(style={'margin':'0 25px 0 25px'})
+																	label.inline
+																		input(name="form-field-radio",type="radio",value="2").ace
+																		span.lbl.middle
+																			| 女			
+												div.col-md-4.col-sm-12
+												div.col-md-4.col-sm-12
+										div#edit-password.tab-pane
+											| 修改密码
