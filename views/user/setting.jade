@@ -98,7 +98,7 @@ block main_content
 																		input.col-xs-12.date-picker.input.middle#form-field-birthday(type="date",placeholder="请选择日期",value="#{birthday}",data-date-format="yyyy-mm-dd")
 																		span.input-group-addon
 																			i.ace-icon.fa.fa-calendar
-															div.form-group
+															div.form-group#form-field-radio
 																label.col-xs-3.control-label.no-padding-right(for="form-field-niconame") 性别：
 																div.col-xs-9
 																	label.inline
@@ -111,6 +111,86 @@ block main_content
 																		span.lbl.middle
 																			| 女			
 												div.col-md-4.col-sm-12
+													h4.header.blue.bolder.smaller 联系方式
+													div.row
+														div.col-xs-12
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-email") 邮箱地址：
+																div.col-xs-9
+																	input.col-xs-12(type="email",placeholder="请输入邮箱地址",value="#{user.email}")#form-field-email
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-website") 个人网站：
+																div.col-xs-9
+																	input.col-xs-12(type="text",placeholder="请输入个人网址",value="#{user.website}")#form-field-website
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-phone") 联系电话：
+																div.col-xs-9
+																	input.col-xs-12(type="text",placeholder="请输入联系电话",value="#{user.phone}")#form-field-phone
 												div.col-md-4.col-sm-12
+													h4.header.blue.bolder.smaller 社交平台
+													div.row
+														div.col-xs-12
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-facebook") facebook：
+																span.input-icon.col-xs-9
+																	input.col-xs-12(type="text",placeholder="feacbook",value="#{user.facebook}")#form-field-facebook
+																	i.ace-icon.fa.fa-facebook.blue(style={'left':'16px'})
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-twitter") twitter：
+																span.input-icon.col-xs-9
+																	input.col-xs-12(type="text",placeholder="twitter",value="#{user.twitter}")#form-field-twitter
+																	i.ace-icon.fa.fa-twitter.red(style={'left':'16px'})
+															div.form-group
+																label.col-xs-3.control-label.no-padding-right(for="form-field-google") google：
+																span.input-icon.col-xs-9
+																	input.col-xs-12(type="text",placeholder="google",value="#{user.google}")#form-field-google
+																	i.ace-icon.fa.fa-google.red(style={'left':'16px'})
+											div.hr.dashed
+											div.row
+												div.col-xs-12
+													div.form-group
+														label.col-xs-2.control-label 现居地：
+														div.col-xs-10
+															div.row
+																select.col-xs-3#form-field-select-province(placeholder="请选择省、直辖市")
+																	option(disable,selected,value="") 请选择省、直辖市
+																select.col-xs-3#form-field-select-city(placeholder="请选择地级市",style={'margin-left':'20px'})
+																	option(disable,selected,value="") 请选择地级市
+																select.col-xs-3#form-field-select-county(placeholder="请选择县级市",style={'margin-left':'20px'})
+																	option(disable,selected,value="") 请选择县级市
+													div.form-group
+														label.col-xs-2.control-label(for="form-field-address") 详细地址：
+														input.col-xs-8(type="text",placeholder="请输入详细地址")#form-field-address
+													div.form-group
+														label.col-xs-12.control-label.col-xs-pull-10(for="form-field-comment") 个人简介：
+														textarea.col-xs-10.col-xs-offset-1(style={'height':'100px','max-height':'100px','resize':'none'},placeholder="个人简介",value="#{user.comment}")#form-field-comment
+											div.row
+												div.clearfix.form-actions
+													div.col-md-5.col-md-offset-7
+														button.btn.btn-danger.btn-lg#btn-reseat(style={'margin-right':'20px'})
+															i.ace-icon.fa.fa-refresh
+															| 重置
+														button.btn.btn-success.btn-lg#btn-submit
+															i.ace-icon.fa.fa-check
+															| 确认修改
 										div#edit-password.tab-pane
-											| 修改密码
+											div.space-10
+											div.form-group
+												label.col-sm-3.control-label.no-padding-right(for="form-field-pass1") 新密码：
+												div.col-sm-9
+													input(type="password",placeholder="新密码")#form-field-pass1
+											div.space-4
+											div.form-group
+												label.col-sm-3.control-label.no-padding-right(for="form-field-pass2") 确认密码：
+												div.col-sm-9
+													input(type="password",placeholder="确认密码")#form-field-pass2
+											div.row
+												div.clearfix.form-actions
+													div.col-md-9.col-md-offset-3
+														button.btn.btn-danger#btn-reseat(style={'margin-right':'20px'})
+															i.ace-icon.fa.fa-refresh
+															| 重置
+														button.btn.btn-success#btn-submit
+															i.ace-icon.fa.fa-check
+															| 确认修改
+	script(src="http://127.0.0.1:3000/javascripts/user/setting.js")

@@ -84,7 +84,7 @@ block main_content
 											span.profile-picture
 												img#avatar2.editable.img-responsive(src="http://127.0.0.1:3000/aceadmin/assets/avatars/profile-pic.jpg",alt="#{user.username} 的头像",widht="120%",height="120%")
 											div.space-6
-											a(href="#").btn.btn-success.btn-sm.btn-block
+											a(href="/users/setting?id=#{user.id}").btn.btn-success.btn-sm.btn-block
 												i.ace-icon.fa.fa-plus-circle.bigger-120
 												span.bigger-110 完善信息
 											a(href="#").btn.btn-primary.btn-sm.btn-block
@@ -115,7 +115,7 @@ block main_content
 												div.profile-info-row
 													div.profile-info-name 地址
 													div.profile-info-value
-														span #{user.location}
+														span #{user.province}#{user.city}#{user.county}
 												div.profile-info-row
 													div.profile-info-name 年龄
 													div.profile-info-value

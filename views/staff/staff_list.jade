@@ -60,20 +60,20 @@ block main_content
 				div.table-header 所有员工详细信息
 				div
 					div#sample-table-2_wrapper.dataTables_wrapper.form-inline-no-footer
-						div.row
-							div.col-xs-6
-								div.dataTables_length#sample-table-2_length
-									label 显示 
-										select(name="sample-table-2_length",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
-											option(value="10") 10
-											option(value="25") 25
-											option(value="50") 50
-											option(value="100") 100
-										| 条数据
-							div.col-xs-6
-								div.sample-table-2_filter.dataTables_filter
-									label 查询：
-										input(type="search",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
+						//- div.row
+						//- 	div.col-xs-6
+						//- 		div.dataTables_length#sample-table-2_length
+						//- 			label 显示 
+						//- 				select(name="sample-table-2_length",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
+						//- 					option(value="10") 10
+						//- 					option(value="25") 25
+						//- 					option(value="50") 50
+						//- 					option(value="100") 100
+						//- 				| 条数据
+						//- 	div.col-xs-6
+						//- 		div.sample-table-2_filter.dataTables_filter
+						//- 			label 查询：
+						//- 				input(type="search",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
 						table#sample-table-2.table.table-striped.table-bordered.table-hover.dataTable.no-footer(role="grid",aria-describedby="sample-table-2_info")
 							thead
 								tr(role="row")
@@ -96,7 +96,7 @@ block main_content
 											label.position-relative
 												input(type="checkbox").ace
 												span.lbl
-										td
+										td(data-id="#{staff.id}")
 											| #{staff.id}
 										td
 											| #{staff.name}
@@ -111,6 +111,7 @@ block main_content
 											div.hidden-md.hidden-lg
 												div.inline.position-relative
 													button.btn.btn-minier.btn-yellow.dropdown-toggle(data-toggle="dropdown",data-position="auto")
+														i.ace-icon.fa.fa-caret-down.icon-only.bigger-110
 													ul.dropdown-menu.dropdown-only-icon.dropdown-yellow.dropdown-menu-right.dropdown-caret.dropdown-close
 														li
 															a(href="#",data-rel="tooltip",title,data-original-title="View").tooltip-info
@@ -124,14 +125,17 @@ block main_content
 															a(href="#",data-rel="tooltip",title,data-original-title="Delete").tooltip-info
 																span.red
 																	i.ace-icon.fa.fa-trash-o.bigger-120
-						div.row
-							div.col-xs-6
-								div.dataTables_info#sample-table-2_info(role="status",aria-live="polite")
-									| 从#{staffs.length}个条目中，显示第1到第10条
-							div.col-xs-6
-								div.dataTables_paginate.pagin_simple_numbers#sapmle-table-2_paginate
-									ul.pagination
-										li.paginate_button.previous.disabled(aria-controls="sample-table-2",tabindex="0")#sample-table-2_previouse
-											a(href="#") 上一页
-										li.paginate_button.next(aria-controls="sample-table-2",tabindex="0")#sample-table-2_next
-											a(href="#") 下一页
+						//- div.row
+						//- 	div.col-xs-6
+						//- 		div.dataTables_info#sample-table-2_info(role="status",aria-live="polite")
+						//- 			| 从#{staffs.length}个条目中，显示第1到第10条
+						//- 	div.col-xs-6
+						//- 		div.dataTables_paginate.pagin_simple_numbers#sapmle-table-2_paginate
+						//- 			ul.pagination
+						//- 				li.paginate_button.previous.disabled(aria-controls="sample-table-2",tabindex="0")#sample-table-2_previouse
+						//- 					a(href="#") 上一页
+						//- 				li.paginate_button.next(aria-controls="sample-table-2",tabindex="0")#sample-table-2_next
+						//- 					a(href="#") 下一页
+	script(src="http://127.0.0.1:3000/aceadmin/assets/js/jquery.dataTables.min.js")
+	script(src="http://127.0.0.1:3000/aceadmin/assets/js/jquery.dataTables.bootstrap.js")
+	script(src="http://127.0.0.1:3000/javascripts/staff/staff_list.js")

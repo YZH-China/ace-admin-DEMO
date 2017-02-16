@@ -59,31 +59,31 @@ block main_content
 				h3.header.smaller.lighter.blue 商品数据表
 				div.table-header 所有商品详细信息
 				div
-					div#sample-table-2_wrapper.dataTables_wrapper.form-inline-no-footer
-						div.row
-							div.col-xs-6
-								div.dataTables_length#sample-table-2_length
-									label 显示 
-										select(name="sample-table-2_length",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
-											option(value="10") 10
-											option(value="25") 25
-											option(value="50") 50
-											option(value="100") 100
-										| 条数据
-							div.col-xs-6
-								div.sample-table-2_filter.dataTables_filter
-									label 查询：
-										input(type="search",aria-controls="sample-table-2",style={'display':'inline-block'}).form-control.input-sm
-						table#sample-table-2.table.table-striped.table-bordered.table-hover.dataTable.no-footer(role="grid",aria-describedby="sample-table-2_info")
+					div#sample-table-commodity_wrapper.dataTables_wrapper.form-inline-no-footer
+						//- div.row
+						//- 	div.col-xs-6
+						//- 		div.dataTables_length#sample-table-commodity_length
+						//- 			label 显示 
+						//- 				select(name="sample-table-commodity_length",aria-controls="sample-table-commodity",style={'display':'inline-block'}).form-control.input-sm
+						//- 					option(value="10") 10
+						//- 					option(value="25") 25
+						//- 					option(value="50") 50
+						//- 					option(value="100") 100
+						//- 				| 条数据
+						//- 	div.col-xs-6
+						//- 		div.sample-table-commodity_filter.dataTables_filter
+						//- 			label 查询：
+						//- 				input(type="search",aria-controls="sample-table-commodity",style={'display':'inline-block'}).form-control.input-sm
+						table#sample-table-commodity.table.table-striped.table-bordered.table-hover.dataTable.no-footer(role="grid",aria-describedby="sample-table-commodity_info")
 							thead
 								tr(role="row")
 									th.center.sorting_disabled(rowspan="1",colspan="1",aria-label="")
 										label.position-relative
 											input(type="checkbox").ace
 											span.lbl
-									th.sorting(tabindex="0",aria-controls="sample-table-2",rowspan="1",colspan="1",aria-label="id: activate to sort column ascending") 编号
-									th.sorting(tabindex="0",aria-controls="sample-table-2",rowspan="1",colspan="1",aria-label="name: activate to sort column ascending") 商品名称
-									th.sorting(tabindex="0",aria-controls="sample-table-2",rowspan="1",colspan="1",aria-label="price: activate to sort column ascending") 商品单价
+									th.sorting(tabindex="0",aria-controls="sample-table-commodity",rowspan="1",colspan="1",aria-label="id: activate to sort column ascending") 编号
+									th.sorting(tabindex="0",aria-controls="sample-table-commodity",rowspan="1",colspan="1",aria-label="name: activate to sort column ascending") 商品名称
+									th.sorting(tabindex="0",aria-controls="sample-table-commodity",rowspan="1",colspan="1",aria-label="price: activate to sort column ascending") 商品单价
 									th.sorting_disabled(rowspan="1",colspan="1",aria-label="")
 							tbody
 								each commodity, index in commodities
@@ -97,7 +97,7 @@ block main_content
 											label.position-relative
 												input(type="checkbox").ace
 												span.lbl
-										td
+										td(data-id="#{commodity.id}")
 											| #{commodity.id}
 										td
 											| #{commodity.name}
@@ -114,6 +114,7 @@ block main_content
 											div.hidden-md.hidden-lg
 												div.inline.position-relative
 													button.btn.btn-minier.btn-yellow.dropdown-toggle(data-toggle="dropdown",data-position="auto")
+														i.ace-icon.fa.fa-caret-down.icon-onle.bigger-120
 													ul.dropdown-menu.dropdown-only-icon.dropdown-yellow.dropdown-menu-right.dropdown-caret.dropdown-close
 														li
 															a(href="#",data-rel="tooltip",title,data-original-title="View").tooltip-info
@@ -127,14 +128,17 @@ block main_content
 															a(href="#",data-rel="tooltip",title,data-original-title="Delete").tooltip-info
 																span.red
 																	i.ace-icon.fa.fa-trash-o.bigger-120
-						div.row
-							div.col-xs-6
-								div.dataTables_info#sample-table-2_info(role="status",aria-live="polite")
-									| 从#{commodities.length}个条目中，显示第1到第10条
-							div.col-xs-6
-								div.dataTables_paginate.pagin_simple_numbers#sapmle-table-2_paginate
-									ul.pagination
-										li.paginate_button.previous.disabled(aria-controls="sample-table-2",tabindex="0")#sample-table-2_previouse
-											a(href="#") 上一页
-										li.paginate_button.next(aria-controls="sample-table-2",tabindex="0")#sample-table-2_next
-											a(href="#") 下一页
+						//- div.row
+						//- 	div.col-xs-6
+						//- 		div.dataTables_info#sample-table-commodity_info(role="status",aria-live="polite")
+						//- 			| 从#{commodities.length}个条目中，显示第1到第10条
+						//- 	div.col-xs-6
+						//- 		div.dataTables_paginate.pagin_simple_numbers#sapmle-table-2_paginate
+						//- 			ul.pagination
+						//- 				li.paginate_button.previous.disabled(aria-controls="sample-table-commodity",tabindex="0")#sample-table-commodity_previouse
+						//- 					a(href="#") 上一页
+						//- 				li.paginate_button.next(aria-controls="sample-table-commodity",tabindex="0")#sample-table-commodity_next
+						//- 					a(href="#") 下一页
+	script(src="http://127.0.0.1:3000/aceadmin/assets/js/jquery.dataTables.min.js")
+	script(src="http://127.0.0.1:3000/aceadmin/assets/js/jquery.dataTables.bootstrap.js")
+	script(src="http://127.0.0.1:3000/javascripts/commodity/commodity_list.js")
