@@ -95,19 +95,19 @@ block main_content
 																div.col-xs-9
 																	div.input-group
 																		- var birthday = user.birthday ? user.birthday : ''
-																		input.col-xs-12.date-picker.input.middle#form-field-birthday(type="date",placeholder="请选择日期",value="#{birthday}",data-date-format="yyyy-mm-dd")
+																		input.col-xs-12.date-picker.input.middle#form-field-birthday(type="text",placeholder="请选择日期",value="#{birthday}",data-date-format="yyyy-mm-dd")
 																		span.input-group-addon
 																			i.ace-icon.fa.fa-calendar
 															div.form-group#form-field-radio
 																label.col-xs-3.control-label.no-padding-right(for="form-field-niconame") 性别：
 																div.col-xs-9
 																	label.inline
-																		input(name="form-field-radio",type="radio",value="1").ace
+																		input(name="form-field-radio",type="radio",value=1).ace
 																		span.lbl.middle
 																			| 男
 																	span(style={'margin':'0 25px 0 25px'})
 																	label.inline
-																		input(name="form-field-radio",type="radio",value="2").ace
+																		input(name="form-field-radio",type="radio",value=2).ace
 																		span.lbl.middle
 																			| 女			
 												div.col-md-4.col-sm-12
@@ -153,11 +153,11 @@ block main_content
 														div.col-xs-10
 															div.row
 																select.col-xs-3#form-field-select-province(placeholder="请选择省、直辖市")
-																	option(disable,selected,value="") 请选择省、直辖市
+																	option(disabled,selected,value="") 请选择省、直辖市
 																select.col-xs-3#form-field-select-city(placeholder="请选择地级市",style={'margin-left':'20px'})
-																	option(disable,selected,value="") 请选择地级市
+																	option(disabled,selected,value="") 请选择地级市
 																select.col-xs-3#form-field-select-county(placeholder="请选择县级市",style={'margin-left':'20px'})
-																	option(disable,selected,value="") 请选择县级市
+																	option(disabled,selected,value="") 请选择县级市
 													div.form-group
 														label.col-xs-2.control-label(for="form-field-address") 详细地址：
 														input.col-xs-8(type="text",placeholder="请输入详细地址")#form-field-address

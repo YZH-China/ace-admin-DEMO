@@ -12,6 +12,7 @@ var home = require('./routes/home');
 var users = require('./routes/users');
 var staff = require("./routes/staff.js");
 var commodity = require("./routes/commodity.js");
+var file = require("./routes/file.js");
 
 var app = express();
 
@@ -38,6 +39,7 @@ app.use('/users', users);
 app.use('/home', home);
 app.use('/staff', staff);
 app.use('/commodity', commodity);
+app.use('/loadfile', file);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -28,4 +28,10 @@ module.exports.getUserById = function(id, callback){
 			callback(false);
 		}
 	})
+};
+
+module.exports.updateUserInfo = function(user, callback){
+	userDao.updateUserInfo(user, function(rel){
+		callback(rel);
+	})
 }

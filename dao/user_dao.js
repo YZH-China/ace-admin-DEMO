@@ -20,4 +20,11 @@ module.exports.getUserById = function(id, callback){
 	queryMethod.query(sql, id, function(rel){
 		callback(rel);
 	})	
+};
+
+module.exports.updateUserInfo = function(user, callback){
+	var sql = "update user set ?";
+	queryMethod.query(sql, user, function(rel){
+		callback(rel);
+	})
 }

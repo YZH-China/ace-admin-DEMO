@@ -46,6 +46,13 @@ router.get('/setting', function(req, res, next){
 			title: "Aceadmin Demo"
 		})
 	})
+});
+
+//修改用户信息
+router.post('/updating', function(req, res, next){
+	userServer.updateUserInfo(req.body, function(data){
+		res.send(data);
+	})
 })
 
 module.exports = router;
