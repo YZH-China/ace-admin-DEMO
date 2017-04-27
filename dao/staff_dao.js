@@ -55,4 +55,25 @@ module.exports.editOne = function(staff, callback){
 			callback(data);
 		}
 	})
+};
+
+module.exports.queryByName = function(query, callback){
+	var sql_sel_like_name_page = "select * from staff where name like '%" + query.name + "%' limit " 
+							+ ((query.pageData.currentPage-1) * query.pageData.pageSize)
+							+ ',' + query.pageData.pageSize;
+	var sql_sel_like_name = "select * from staff where name like '%" + query.name + "%'";
+	var sql_query_page = 'select count(id) as rowcount, ceil(count(id)/' + query.pageData.pageSize + ') as pagecount from ' +
+						 '(' + sql_sel_like_name + ') as result';
+	console.log(sql_query_page);
+	var obj = query.pageData;
+	queryMethod.query(sql_query_page, {}, function(data){
+		if(data[0]){
+			obj.rowCount = data[0].rowcount;
+			obj.pageCount = data[0].pagecount;
+		}      
+		queryMethod.query(sql_sel_like_name_page, {}, function(data){
+			obj.rows = data;
+			callback(obj);
+		})
+	})
 }

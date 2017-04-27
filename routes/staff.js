@@ -60,6 +60,13 @@ router.post('/editOne', function(req, res, next){
 	staffServer.editOne(req.body, function(data){
 		res.send(data);
 	})
+});
+
+router.post('/query', function(req, res){
+	console.log(req.body);
+	staffServer.queryByName(req.body, function(data){
+		res.send(data);
+	})
 })
 
 module.exports = router;

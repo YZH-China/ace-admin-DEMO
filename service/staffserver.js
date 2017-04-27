@@ -41,4 +41,11 @@ module.exports.editOne = function(body, callback){
 	staffDao.editOne({ id: body.id, name: body.name }, function(data){
 		callback(data);
 	})
+};
+
+module.exports.queryByName = function(query, callback){
+	pageData.currentPage = query.currentPage;
+	staffDao.queryByName({name: query.name, pageData: pageData}, function(data){
+		callback(data);
+	})
 }

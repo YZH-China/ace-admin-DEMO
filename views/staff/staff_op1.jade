@@ -55,6 +55,13 @@ block main_content
 	div.page-content
 		div.row
 			div.col-xs-12
+				div.row
+					div.inline.col-xs-12.col-sm-12.col-md-12.col-lg-10
+						label(for="form-field-condition") 查询条件：
+						input#form-field-name(type="text", placeholder="请输入查询条件", ).form-control
+					div.inline.col-xs-12.col-sm-12.col-md-12.col-lg-2.center
+						div.space-8
+						buttom.btn.btn-primary.bigger-110#form-btn-query 查询
 				table#grid-table
 				div#grid-pager
 	script(src="http://127.0.0.1:3000/javascripts/staff/staff_op.js")

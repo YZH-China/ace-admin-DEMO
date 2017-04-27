@@ -1,11 +1,16 @@
 jQuery(function($) {
+	var testData = [];
 	var grid_selector = "#grid-table";
 	var pager_selector = "#grid-pager";
 	var ids = [];
-	
+	var queryData = {
+		name: '张',
+		currentPage: 1
+	};
+
 	//resize to fit page size
 	$(window).on('resize.jqGrid', function () {
-		$(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+		jQuery(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
     })
 	//resize on sidebar collapse/expand
 	var parent_column = $(grid_selector).closest('[class*="col-"]');
@@ -18,39 +23,34 @@ jQuery(function($) {
 		}
     })
 
-
-
 	jQuery(grid_selector).jqGrid({
-		data: {},
 		datatype: "json",
+		data: {},
 		url: '/staff/getStaffsGridByPage',
 		mtype: 'POST',
         loadonce: false,
         prmNames: {page:"currentPage",rows:"rows"},
-        ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
-        serializeGridData: function (postData) {
-            return JSON.stringify(postData);
-        },
+        // ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
+        // serializeGridData: function (postData) {
+        //     return JSON.stringify(postData);
+        // },
         jsonReader: {
-        	root: function(obj){
-        		$(grid_selector).jqGrid('setGridParam', {
-			      	rowNum : obj.pageSize
-			    }).trigger("reloadGrid");
-        		return obj.rows;
-        	},
-        	page: function(obj){
-        		return obj.currentPage;
-        	},
-        	total: function(obj){
-        		return obj.pageCount;
-        	},
-        	records: function(obj){
-        		return obj.rowCount
-        	},
-        	repeatitems: false
-        },
+	    	root: function(obj){
+	    		return obj.rows;
+	    	},
+	    	page: function(obj){
+	    		return obj.currentPage;
+	    	},
+	    	total: function(obj){
+	    		return obj.pageCount;
+	    	},
+	    	records: function(obj){
+	    		return obj.rowCount
+	    	},
+	    	repeatitems: false
+	    },
 		height: 390,
-		colNames:[' ', 'ID','姓名'],
+		colNames:['', 'ID','姓名'],
 		colModel:[
 			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -82,11 +82,11 @@ jQuery(function($) {
 							
 						}
 					},
-					// editformbutton:true,
-					// editOptions:{
-					// 	recreateForm: true,
-					// 	beforeShowForm:beforeEditCallback,
-					// }
+					editformbutton:true,
+					editOptions:{
+						recreateForm: true,
+						beforeShowForm:beforeEditCallback,
+					}
 				}
 			},
 			{name:'id',index:'id', width:60, sorttype:"int", key:true},
@@ -99,14 +99,14 @@ jQuery(function($) {
 		],
 
 		viewrecords : true,
-		// rowNum:10,
+		rowNum:10,
 		// rowList:[10,20,30],
 		pager : pager_selector,
 		altRows: true,
-		//toppager: true,
+		// toppager: true,
 		
 		multiselect: true,
-		//multikey: "ctrlKey",
+		// multikey: "ctrlKey",
         multiboxonly: true,
 
 		loadComplete : function() {
@@ -126,28 +126,28 @@ jQuery(function($) {
 		// 	//getDataIDs
 		// 	console.log($(grid_selector).jqGrid('getGridParam', 'selarrrow'));
 		// },
-		loadBeforeSend: function(xhr, settings){
-			var data = null;
-			if(settings.data){
-				data = JSON.parse(settings.data);
-				if(data._search){
-					settings.url = '/staff/search';
-				}
-				if(data.sidx !== ''){
-					setting.url = '/staff/sort';
-				}
-			}
-			
-			console.log(settings);
+		// loadBeforeSend: function(xhr, settings){
+		// 	var data = null;
+		// 	if(settings.data){
+		// 		data = JSON.parse(settings.data);
+		// 		if(data._search){
+		// 			settings.url = '/staff/search';
+		// 		}
+		// 		if(data.sidx && data.sidx !== ''){
+		// 			settings.url = '/staff/sort';
+		// 		}
+		// 	}
+		// },
+		gridComplete: function(){
+			queryData.currentPage = $(grid_selector).jqGrid('getGridParam', 'page');
 		},
 
 		editurl: "/staff/editOne",//nothing is saved
 		caption: "jqGrid 学习"
 
 	});
+
 	$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-	
-	
 
 	//enable search/filter toolbar
 	//jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
@@ -287,7 +287,7 @@ jQuery(function($) {
 		{multipleSearch:true}
 	)
 
-
+	addAllEvent();
 	
 	function style_edit_form(form) {
 		//enable datepicker on "sdate" field and switches for "stock" field
@@ -352,7 +352,7 @@ jQuery(function($) {
 	//it may be possible to have some custom formatter to do this as the grid is being created to prevent this
 	//or go back to default browser checkbox styles for the grid
 	function styleCheckbox(table) {
-	/**
+	
 		$(table).find('input:checkbox').addClass('ace')
 		.wrap('<label />')
 		.after('<span class="lbl align-top" />')
@@ -361,14 +361,14 @@ jQuery(function($) {
 		$('.ui-jqgrid-labels th[id*="_cb"]:first-child')
 		.find('input.cbox[type=checkbox]').addClass('ace')
 		.wrap('<label />').after('<span class="lbl align-top" />');
-	*/
+	
 	}
 	
 
 	//unlike navButtons icons, action icons in rows seem to be hard-coded
 	//you can change them like this in here if you want
 	function updateActionIcons(table) {
-		/**
+		
 		var replacement = 
 		{
 			'ui-ace-icon fa fa-pencil' : 'ace-icon fa fa-pencil blue',
@@ -381,7 +381,7 @@ jQuery(function($) {
 			var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
 			if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
 		})
-		*/
+		
 	}
 	
 	//replace icons with FontAwesome icons like above
@@ -402,8 +402,8 @@ jQuery(function($) {
 	}
 
 	function enableTooltips(table) {
-		$('.navtable .ui-pg-button').tooltip({container:'body'});
-		$(table).find('.ui-pg-div').tooltip({container:'body'});
+		jQuery('.navtable .ui-pg-button').tooltip({container:'body'});
+		jQuery(table).find('.ui-pg-div').tooltip({container:'body'});
 	}
 
 	function addFunc(){
@@ -411,7 +411,29 @@ jQuery(function($) {
 		form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
 		.wrapInner('<div class="widget-header" />')
 		style_edit_form(form);
-		console.log(a, b, c);
+	}
+
+	function addAllEvent(){
+		$("#form-field-name").on({
+			change: nameHandle
+		});
+		$("#form-btn-query").on({
+			click: queryBtnHandle
+		})
+	}
+
+	function nameHandle(event){
+		queryData.name = $("#form-field-name").val();
+		console.log(queryData);
+	}
+	function queryBtnHandle(event){
+		jQuery(grid_selector).jqGrid('setGridParam', {
+			page: 1
+		});
+		jQuery(grid_selector).jqGrid('setGridParam', {
+			url: '/staff/query',
+			postData: {name:queryData.name, currentPage: jQuery(grid_selector).jqGrid('getGridParam', 'page')}
+		}).trigger("reloadGrid");
 	}
 
 	//var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
