@@ -1,47 +1,7 @@
 extends ../home/home
 
 block sidebar_list
-	ul.nav.nav-list
-		li
-			a(href='/home?id=#{user.id}')
-				i.menu-icon.glyphicon.glyphicon-home
-				span.menu-text.bigger-110 首页
-		li.hsub
-			a(href="#").dropdown-toggle
-				i.menu-icon.fa.fa-users
-				span.menu-text.bigger-110 员工管理
-				b.arrow.fa.fa-angle-down
-			ul.submenu
-				li
-					a(href="/staff/list?id=#{user.id}")
-						i.menu-icon.fa.fa-caret-right
-						span.menu-text 员工列表
-				li
-					a(href="#")
-						i.menu-icon.fa.fa-caret-right
-						span.menu-text 员工操作1
-				li
-					a(href="#")
-						i.menu-icon.fa.fa-caret-right
-						span.menu-text 员工操作2
-		li.hsub
-			a(href="#").dropdown-toggle
-				i.menu-icon.fa.fa-gift
-				span.menu-text.bigger-110 商品管理
-				b.arrow.fa.fa-angle-down
-			ul.submenu
-				li
-					a(href="/commodity/list?id=#{user.id}")
-						i.menu-icon.fa.fa-caret-right
-						span.menu-text 商品列表
-				li
-					a(href="#")
-						i.menu-icon.fa.fa-caret-right
-						span.menu-text 商品操作1
-				li
-					a(href="#")
-						i.menu-icon.fa.fa-caret-right
-						span.menu-text 商品操作2
+	include ../sidebar.jade
 
 block main_content
 	div.breadcrumbs.breadcrumbs-fixed#breadcrumbs

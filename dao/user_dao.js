@@ -27,4 +27,11 @@ module.exports.updateUserInfo = function(user, callback){
 	queryMethod.query(sql, user, function(rel){
 		callback(rel);
 	})
+};
+
+module.exports.getUserByEmail = function(email, callback){
+	var sql_sel_user_email = "select id from user where email=" + "'" + email + "'";
+	queryMethod.query(sql_sel_user_email, {}, function(data){
+		callback(data);
+	})
 }

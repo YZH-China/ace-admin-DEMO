@@ -29,7 +29,8 @@ jQuery(function($) {
 		url: '/staff/getStaffsGridByPage',
 		mtype: 'POST',
         loadonce: false,
-        prmNames: {page:"currentPage",rows:"rows"},
+        prmNames: {page:"currentPage", rows:null, sort: null,order: null, search: null, nd: null, npage:null},
+
         // ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
         // serializeGridData: function (postData) {
         //     return JSON.stringify(postData);

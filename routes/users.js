@@ -55,4 +55,14 @@ router.post('/updating', function(req, res, next){
 	})
 })
 
+router.post('/checkEmail', function(req, res, next){
+	if(req.body.email === ''){
+		res.send(false);
+	} else {
+		userServer.getUserByEmail(req.body.email, function(data){
+			res.send(data);
+		})
+	}
+})
+
 module.exports = router;

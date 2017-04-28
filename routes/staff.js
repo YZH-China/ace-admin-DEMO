@@ -7,7 +7,7 @@ router.get('/list', function(req, res, next){
 	staffServer.getStaffsByPage(function(data){
 		res.render('staff/staff_list', {
 			user: {username: session.username, id:session.userid},
-			titile:"Aceadmin Demo",
+			title:"Aceadmin Demo",
 			staffs: data
 		});
 	})
@@ -17,6 +17,13 @@ router.get('/op1', function(req, res, next){
 	res.render('staff/staff_op1', {
 		user: {username: session.username, id: session.userid},
 		title: 'Aceadmin Demo'
+	})
+})
+
+router.get('/op2', function(req, res, next){
+	res.render('staff/staff_op2', {
+		user: { username: session.username, id:session.userid },
+		title: "Aceadmin Demo"
 	})
 })
 

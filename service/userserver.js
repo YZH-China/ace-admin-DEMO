@@ -34,4 +34,14 @@ module.exports.updateUserInfo = function(user, callback){
 	userDao.updateUserInfo(user, function(rel){
 		callback(rel);
 	})
+};
+
+module.exports.getUserByEmail = function(email, callback){
+	userDao.getUserByEmail(email, function(data){
+		if(data.length !== 0){
+			callback(false)
+		} else if(data.length === 0){
+			callback(true)
+		}
+	})
 }

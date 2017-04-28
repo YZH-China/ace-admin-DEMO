@@ -1,0 +1,116 @@
+extends ../home/home
+
+block sidebar_list
+	include ../sidebar.jade	
+
+block main_content
+	div.breadcrumbs.breadcrumbs-fixed#breadcrumbs
+		ul.breadcrumb
+			li
+				i.ace-icon.fa.fa-home.home-icon
+				| 首页
+			li
+				| 员工管理
+			li.active
+				| 员工列表
+	div.page-content
+		div.row
+			div.col-xs-12
+				form.form-horizontal#validation-form(method="get")
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 邮箱：
+						div.col-xs-12.col-sm-9
+							div.clear-fix
+								input.col-xs-12.col-sm-6(type="email", name="email")#email
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 密码：
+						div.col-xs-12.col-sm-9
+							div.clear-fix
+								input.col-xs-12.col-sm-3(type="password", name="password")#password
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 确认密码：
+						div.col-xs-12.col-sm-9
+							div.clear-fix
+								input.col-xs-12.col-sm-3(type="password", name="confirm_password")#confirm_password
+					div.hr.hr-dotted
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 复选框：
+						div.col-xs-13.col-sm-9
+							div
+								label
+									input.ace(name="checkboxs", type="checkbox", value=1)
+									span.lbl 复选框1
+							div
+								label
+									input.ace(name="checkboxs", type="checkbox", value=2)
+									span.lbl 复选框2
+							div
+								label
+									input.ace(name="checkboxs", type="checkbox", value=3)
+									span.lbl 复选框3
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 性别：
+						div.col-xs-12.col-sm-9
+							div
+								label.line-height-1.blue
+									input(type="radio", name="gender", value=1).ace
+									span.lbl 男
+							div
+								label.line-height-1.blue
+									input(type="radio", name="gender", value=2).ace
+									span.lbl 女
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 日期：
+						div.col-xs-12.col-sm-9
+							div.clear-fix
+								input(type="text", name="date", data-date-format="yyyy-mm-dd")#date.date-picker.col-xs-12.col-sm-6
+					div.form-group
+						label.control-label.col-xs-12.col-sm-3.no-padding-right 系统：
+						div.col-xs-12.col-sm-9
+							div.clear-fix
+								select.input-medium.valid#platform(name="platform", aria-required="true", aria-invalid="false")
+									option(value="") ------------------
+									option(value="linux") Linux
+									option(value="windows") Windows
+									option(value="mac") Max OS
+									option(value="ios") iOS
+									option(value="android") Android
+					div.form-group
+						div.col-xs-12.col-sm-4.col-sm-offset-3
+							label
+								input(name="agree", type="checkbox").ace#agree
+								span.lbl 我同意
+					div.col-xs-12.col-xm-3.col-sm-offset-9
+						button(type="button").btn.btn-success#btn-submit
+							| 提交
+							i.ace-icon.fa.fa-arrow-right.icon-on-right
+	div(tabindex="-1",role="dialog",aria-labellebby="title-success",aria-hidden="true",data-backdrop="true",data-keyboard="true").modal.fade#modal-success
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.bootbox-close-button.close(type="button", data-dismiss="modal") x
+					h4.modal-title
+						| 验证通过
+				div.modal-body.center#modal-success-body
+					h3.text-success.bigger-110
+						| 恭喜您！验证通过
+				div.modal-footer.center#modal-success-footer
+					div.toolbar
+						a(href="#",data-target="#login-box",role="button",data-dismiss="modal").back-to-login-link.btn.btn-success
+							i.ace-icon.fa.fa-arrow-left
+							| &nbsp; 确定
+	div(tabindex="-1",role="dialog",aria-labellebby="title-danger",aria-hidden="true",data-backdrop="true",data-keyboard="true").modal.fade#modal-error
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.bootbox-close-button.close(type="button", data-dismiss="modal") x
+					h4.modal-title
+						| 验证失败
+				div.modal-body.center#modal-error-body
+					h3.text-danger.bigger-110
+						| 很遗憾！验证未通过
+				div.modal-footer.center#modal-error-footer
+					div.toolbar
+						a(href="#",data-target="#login-box",role="button",data-dismiss="modal").back-to-login-link.btn.btn-danger
+							i.ace-icon.fa.fa-arrow-left
+							| &nbsp; 确定
