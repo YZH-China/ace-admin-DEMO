@@ -1,0 +1,22 @@
+extends ../home/home
+
+block sidebar_list
+	include ../sidebar.jade
+
+block main_content
+	div.breadcrumbs.breadcrumbs-fixed#breadcrumbs
+		ul.breadcrumb
+			li
+				i.ace-icon.fa.fa-home.home-icon
+				| 首页
+			li
+				| 员工管理
+			li.active
+				| 员工列表
+	div.page-content
+		div.row
+			div.col-xs-12
+				div.row
+					table#commodity_list
+					div#commodity_page
+	script(src="http://127.0.0.1:3000/javascripts/commodity/commodity_op1.js")

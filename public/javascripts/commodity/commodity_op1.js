@@ -1,12 +1,9 @@
 jQuery(function($) {
-	var testData = [];
-	var grid_selector = "#grid-table";
-	var pager_selector = "#grid-pager";
-	var ids = [];
-	var queryData = {
-		name: '张',
-		currentPage: 1
-	};
+
+	var grid_selector = "#commodity_list";
+	var pager_selector = "#commodity_page";
+	var originalData = [];
+	var newCommodity = {};
 
 	//resize to fit page size
 	$(window).on('resize.jqGrid', function () {
@@ -23,18 +20,12 @@ jQuery(function($) {
 		}
     })
 
-	jQuery(grid_selector).jqGrid({
-		datatype: "json",
-		data: {},
-		url: '/staff/getStaffsGridByPage',
+    jQuery(grid_selector).jqGrid({
+    	datatype: "json",
+		url: '/commodity/getCommoditiesByPage',
 		mtype: 'POST',
         loadonce: false,
-        prmNames: {page:"currentPage"},
-
-        // ajaxGridOptions: { contentType: 'application/json; charset=utf-8' },
-        // serializeGridData: function (postData) {
-        //     return JSON.stringify(postData);
-        // },
+        prmNames: {page:"currentPage", rows:null, sort: null,order: null, search: null, nd: null, npage:null},
         jsonReader: {
 	    	root: function(obj){
 	    		return obj.rows;
@@ -51,7 +42,7 @@ jQuery(function($) {
 	    	repeatitems: false
 	    },
 		height: 390,
-		colNames:['', 'ID','姓名'],
+		colNames:[' ', 'ID','商品名', '单价', '状态'],
 		colModel:[
 			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -83,22 +74,42 @@ jQuery(function($) {
 							
 						}
 					},
-					editformbutton:true,
-					editOptions:{
-						recreateForm: true,
-						beforeShowForm:beforeEditCallback,
-					}
+					// editformbutton:true,
+					// editOptions:{
+					// 	recreateForm: true,
+					// 	beforeShowForm:beforeEditCallback,
+					// }
+				}
+			},   
+			{ 
+				name:'id',index:'id', width:60, sorttype:"int", key:true
+			},
+			{ 
+				name: 'name', index: 'name', width: 100, editable: true, editoptions:{size:"20",maxlength:"30"},
+				editrules: {
+					required: true,
+					// custom: true, //允许自定义
+					// custom_func: function(value, name){
+					// 	console.log(value, name);
+					// 	return ['false', name + '是必要的！'];
+					// }
 				}
 			},
-			{name:'id',index:'id', width:60, sorttype:"int", key:true},
-			{name: 'name', index: 'name', width: 100, editable: true, editoptions:{size:"20",maxlength:"30"}}
+			{
+				name: 'price', index: 'price', width: 100, editable: true,
+				editrules: {
+					required: true,
+					number: true,
+					minValue: 0
+				}
+			},
 			// {name:'sdate',index:'sdate',width:90, editable:true, sorttype:"date",unformat: pickDate},
-			// {name:'name',index:'name', width:150,editable: true,editoptions:{size:"20",maxlength:"30"}},
-			// {name:'stock',index:'stock', width:70, editable: true,edittype:"checkbox",editoptions: {value:"Yes:No"},unformat: aceSwitch},
+			{
+				name:'beingsold',index:'beingsold', editable: true, edittype:"checkbox",editoptions: {value:"1:0"}, unformat: aceSwitch, formatter: showBeingSold
+			}
 			// {name:'ship',index:'ship', width:90, editable: true,edittype:"select",editoptions:{value:"FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX"}},
 			// {name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}} 
 		],
-
 		viewrecords : true,
 		rowNum:10,
 		// rowList:[10,20,30],
@@ -106,11 +117,12 @@ jQuery(function($) {
 		altRows: true,
 		// toppager: true,
 		
-		multiselect: true,
+		multiselect: false,
 		// multikey: "ctrlKey",
         multiboxonly: true,
 
-		loadComplete : function() {
+		loadComplete : function(data) {
+			originalData = data.rows;
 			var table = this;
 			setTimeout(function(){
 				styleCheckbox(table);
@@ -120,42 +132,13 @@ jQuery(function($) {
 				enableTooltips(table);
 			}, 0);
 		},
-		// onSelectRow: function(rowid, status){
-		// 	// console.log(rowid, status);
-		// 	var rowData = $(grid_selector).jqGrid('getRowData', rowid);
-		// 	console.log(rowData);
-		// 	//getDataIDs
-		// 	console.log($(grid_selector).jqGrid('getGridParam', 'selarrrow'));
-		// },
-		// loadBeforeSend: function(xhr, settings){
-		// 	var data = null;
-		// 	if(settings.data){
-		// 		data = JSON.parse(settings.data);
-		// 		if(data._search){
-		// 			settings.url = '/staff/search';
-		// 		}
-		// 		if(data.sidx && data.sidx !== ''){
-		// 			settings.url = '/staff/sort';
-		// 		}
-		// 	}
-		// },
-		gridComplete: function(){
-			queryData.currentPage = $(grid_selector).jqGrid('getGridParam', 'page');
-		},
+		// editurl: "/commodity/addNewOne",//nothing is saved
+		caption: "商品"
+    })
 
-		editurl: "/staff/editOne",//nothing is saved
-		caption: "jqGrid 学习"
+    $(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
 
-	});
-
-	$(window).triggerHandler('resize.jqGrid');//trigger window resize to make the grid get the correct size
-
-	//enable search/filter toolbar
-	//jQuery(grid_selector).jqGrid('filterToolbar',{defaultSearch:true,stringResult:true})
-	//jQuery(grid_selector).filterToolbar({});
-
-
-	//switch element when editing inline
+    //switch element when editing inline
 	function aceSwitch( cellvalue, options, cell ) {
 		setTimeout(function(){
 			$(cell) .find('input[type=checkbox]')
@@ -170,7 +153,6 @@ jQuery(function($) {
 					.datepicker({format:'yyyy-mm-dd' , autoclose:true}); 
 		}, 0);
 	}
-
 
 	//navButtons
 	jQuery(grid_selector).jqGrid('navGrid',pager_selector,
@@ -221,12 +203,19 @@ jQuery(function($) {
 		},
 		{
 			//new record form
-			//width: 700,
+			width: 700,
 			closeAfterAdd: true,
 			recreateForm: false,
 			viewPagerButtons: false,
-			url: '/staff/addNewOne',
-			mtype: 'POST',
+			ajaxEditOptions: {
+				url: '/commodity/addNewOne',
+				mtype: 'POST',
+				data: {},
+				success: function(data){
+					console.log(data);
+				}
+			},
+			prmNames: { oper: null, id: null },
 			beforeShowForm : function(e) {
 				// console.log($(grid_selector).jqGrid('getGridParam', 'caption'));
 				var form = $(e[0]);
@@ -234,8 +223,19 @@ jQuery(function($) {
 				.wrapInner('<div class="widget-header" />')
 				style_edit_form(form);
 			},
-			afterSubmit: function(xhr, postdata){
-				console.log(xhr, postdata);
+			// afterSubmit: function(xhr, postdata){
+			// 	console.log(xhr, postdata);
+			// },
+			// beforeSubmit: function(postData, formid){
+			// 	newCommodity = postData;
+			// 	return [true, ''];
+			// }
+			onclickSubmit: function(params, postdata){
+				var attributeArr = ['beingsold', 'name', 'price'];
+				for(var i = 0; i < attributeArr.length; i += 1){
+					newCommodity[attributeArr[i]] = postdata[attributeArr[i]]
+				}
+				params.ajaxEditOptions.data = newCommodity;
 			}
 		},
 		{
@@ -289,8 +289,6 @@ jQuery(function($) {
 		{multipleSearch:true}
 	)
 
-	addAllEvent();
-	
 	function style_edit_form(form) {
 		//enable datepicker on "sdate" field and switches for "stock" field
 		form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
@@ -408,40 +406,28 @@ jQuery(function($) {
 		jQuery(table).find('.ui-pg-div').tooltip({container:'body'});
 	}
 
-	function addFunc(){
-		var form = $(e[0]);
-		form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar')
-		.wrapInner('<div class="widget-header" />')
-		style_edit_form(form);
+	//根据beingsold显示内容
+	function showBeingSold(cellvalue, options, rowObject){
+		var rowId = jQuery(grid_selector).jqGrid('getGridParam', 'selrow');
+		var rowData = jQuery(grid_selector).jqGrid('getRowData', rowId);
+		for(var i = 0; i < originalData.length; i += 1){
+			if(originalData[i].id == rowData.id){
+				rowData = originalData[i];
+				break;
+			}
+		}
+		var temp = '<span class="';
+		if(rowObject.beingsold === 0 || rowData.beingsold === 0){
+			temp += 'label label-danger arrowed-right">未授权</span>';
+		} else if(rowObject.beingsold === 1 || rowData.beingsold === 1){
+			temp += 'label label-success arrowed-right">已授权</span>';
+		}
+		return temp;
 	}
-
-	function addAllEvent(){
-		$("#form-field-name").on({
-			change: nameHandle
-		});
-		$("#form-btn-query").on({
-			click: queryBtnHandle
-		})
-	}
-
-	function nameHandle(event){
-		queryData.name = $("#form-field-name").val();
-		console.log(queryData);
-	}
-	function queryBtnHandle(event){
-		jQuery(grid_selector).jqGrid('setGridParam', {
-			page: 1
-		});
-		jQuery(grid_selector).jqGrid('setGridParam', {
-			url: '/staff/query',
-			postData: {name:queryData.name, currentPage: jQuery(grid_selector).jqGrid('getGridParam', 'page')}
-		}).trigger("reloadGrid");
-	}
-
-	//var selr = jQuery(grid_selector).jqGrid('getGridParam','selrow');
 
 	$(document).on('ajaxloadstart', function(e) {
 		$(grid_selector).jqGrid('GridUnload');
 		$('.ui-jqdialog').remove();
 	});
-});
+
+})
