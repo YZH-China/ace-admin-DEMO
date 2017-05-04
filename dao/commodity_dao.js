@@ -25,4 +25,26 @@ module.exports.addNewOne = function(commodity, callback){
 	queryMethod.query(sql_ins_comm, commodity, function(data){
 		callback(data);
 	})
+};
+
+module.exports.updateOne = function(newCommodity, callback){
+	var obj = {};
+	for(var k in newCommodity){
+		if(k !== 'id'){
+			obj[k] = newCommodity[k]
+		}
+	};
+	var sql_upd_comm = 'update commodity set ? where id=' + newCommodity.id;
+	console.log(sql_upd_comm);
+	queryMethod.query(sql_upd_comm, obj, function(data){
+		callback(data);
+	})
+};
+
+module.exports.deleteOne =  function(id, callback){
+	var sql_del_comm_by_id = 'delete from commodity where id=' + id;
+	console.log(sql_del_comm_by_id);
+	queryMethod.query(sql_del_comm_by_id, {}, function(data){
+		callback(data);
+	})
 }

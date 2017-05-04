@@ -24,4 +24,20 @@ module.exports.addNewOne = function(commodity, callback){
 			callback(false);
 		}
 	})
+};
+
+module.exports.updateOne = function(newCommodity, callback){
+	commodityDao.updateOne(newCommodity, function(data){
+		callback(data);
+	})
+};
+
+module.exports.deleteOne = function(body, callback){
+	commodityDao.deleteOne(body.id, function(data){
+		if(data.affectedRows !== 1){
+			callback(false);
+		} else {
+			callback(true);
+		}
+	})
 }

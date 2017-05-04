@@ -4,6 +4,13 @@ jQuery(function($) {
 	var pager_selector = "#commodity_page";
 	var originalData = [];
 	var newCommodity = {};
+	var lastSelect = null;
+	var updateData = {
+		id: '',
+		name: '',
+		price: '',
+		beingsold: ''
+	}
 
 	//resize to fit page size
 	$(window).on('resize.jqGrid', function () {
@@ -28,6 +35,7 @@ jQuery(function($) {
         prmNames: {page:"currentPage", rows:null, sort: null,order: null, search: null, nd: null, npage:null},
         jsonReader: {
 	    	root: function(obj){
+				originalData = obj.rows;
 	    		return obj.rows;
 	    	},
 	    	page: function(obj){
@@ -54,38 +62,63 @@ jQuery(function($) {
 					delOptions:{
 						recreateForm: true,
 						beforeShowForm:beforeDeleteCallback,
-						url: '/staff/deleteOne',
+						url: '/commodity/deleteOne',
 						mtype: 'POST',
-						delData: {
-							name: function(){
-								var jsid = $(grid_selector).jqGrid('getGridParam', 'selrow');
-								var value = $(grid_selector).jqGrid('getRowData', jsid);
-								return value.name;
-							}
-						},
 						afterSubmit: function(xhr, postdata){
-							console.log(xhr, postdata);
 							var callbackData = JSON.parse(xhr.responseText);
-							if(callbackData.affectedRows !== 1){
-								return [false, '刪除失败']
+							if(callbackData){
+								return [true, '删除成功！']
 							} else {
-								return [true, 'message']
+								return [false, '刪除失败！']
 							}
-							
+							jQuery(grid_selector).trigger('reloadGrid');
+						},
+						serializeDelData: function(postdata){
+							delete postdata.oper;
+							return postdata;
 						}
 					},
-					// editformbutton:true,
-					// editOptions:{
-					// 	recreateForm: true,
-					// 	beforeShowForm:beforeEditCallback,
-					// }
+					editformbutton:true,
+					editOptions:{
+						recreateForm: true,
+						beforeShowForm:beforeEditCallback,
+						closeAfterEdit: true,
+						url: '/commodity/updateOne',
+						mtype: 'POST',
+						afterSubmit: function(xhr, postdata){
+							var callbackData = JSON.parse(xhr.responseText);
+							if(callbackData.affectedRows !== 1){
+								return [ false, '由于未知原因修改失败！']
+							} else {
+								return [ true, '修改成功！']
+							}
+							
+						},
+						serializeEditData: function(postdata){
+							delete postdata.oper;
+							return postdata;
+						},
+						onclickSubmit: function(params){
+							console.log(params);
+						},
+						afterclickPgButtons: function(btnType, form, rowid){
+							var curBeingsold = 0;
+							for(var i = 0; i < originalData.length; i += 1){
+								if(~~originalData[i].id === ~~rowid){
+									curBeingsold = originalData[i].beingsold;
+									break;
+								}
+							}
+							pgBtnChangeState(curBeingsold, form);
+						}
+					}
 				}
 			},   
 			{ 
-				name:'id',index:'id', width:60, sorttype:"int", key:true
+				name:'id',index:'id', width:60, sortable: false, sorttype:"int", key:true
 			},
 			{ 
-				name: 'name', index: 'name', width: 100, editable: true, editoptions:{size:"20",maxlength:"30"},
+				name: 'name', index: 'name', width: 100, sortable: false, editable: true, editoptions:{size:"20",maxlength:"30"},
 				editrules: {
 					required: true,
 					// custom: true, //允许自定义
@@ -96,7 +129,7 @@ jQuery(function($) {
 				}
 			},
 			{
-				name: 'price', index: 'price', width: 100, editable: true,
+				name: 'price', index: 'price', width: 100, sortable: false, editable: true, formatter: 'currency', formatoptions: {prefix: '¥'},
 				editrules: {
 					required: true,
 					number: true,
@@ -122,8 +155,8 @@ jQuery(function($) {
         multiboxonly: true,
 
 		loadComplete : function(data) {
-			originalData = data.rows;
 			var table = this;
+			$('.tooltip').css('display', 'none');
 			setTimeout(function(){
 				styleCheckbox(table);
 				
@@ -132,7 +165,77 @@ jQuery(function($) {
 				enableTooltips(table);
 			}, 0);
 		},
-		// editurl: "/commodity/addNewOne",//nothing is saved
+		// ajaxRowOptions: {
+		// 	url: '/commodity/updateOne',
+		// 	mtype: 'POST',
+		// 	// data: {
+		// 	// 	id: function(){
+		// 	// 		console.log($(grid_selector).find('tbody tr[editable="1"]'))
+		// 	// 		return 1;
+		// 	// 	},
+		// 	// 	name: '商品1',
+		// 	// 	beingsold: '0',
+		// 	// 	price: '123'
+		// 	// },
+		// 	success: function(data){
+		// 		jQuery(grid_selector).trigger('reloadGrid');
+		// 	}
+		// },
+		// // onSelectRow: function(rowid) {
+		// // 	// var currentRow = jQuery(grid_selector).jqGrid('getRowData', rowid);
+		// // 	// console.log($("#jCancelButton_1"), $("#jEditButton_1"))
+		// // 	if(editState && !editInit){
+		// // 		$("#jCancelButton_" + lastSelect.id).trigger('click');
+		// // 	} else if(editState && editInit) {
+		// // 		console.log(2);
+		// // 		editInit = false;
+		// // 	} else {
+		// // 		return;
+		// // 	}
+		// // },
+		// gridComplete: function() {
+		// 	for(var i = 0; i < originalData.length; i += 1){
+		// 		(function(i){
+		// 			$("#jEditButton_" + originalData[i].id).get(0).onclick = function(e){
+		// 				jQuery.fn.fmatter.rowactions.call(this,'edit');
+		// 				setTimeout(function(){
+		// 					$("#"+ originalData[i].id +"_beingsold").on('click', function(){
+		// 						if(this.checked) {
+		// 							updateData.beingsold = '1';
+		// 						}
+		// 						else {
+		// 							updateData.beingsold = '0';
+		// 						}
+		// 					})
+		// 				}, 200)
+		// 			};
+		// 			$("#jSaveButton_" + originalData[i].id).get(0).onclick = function(e){
+		// 				var event = e || window.event;
+		// 				var firstTd = $(this).parents('td[aria-describedby="commodity_list_myac"]');
+		// 				updateData.id = firstTd.nextAll('td[aria-describedby="commodity_list_id"]').text();
+		// 				updateData.name = firstTd.nextAll('td[aria-describedby="commodity_list_name"]').find('input[name="name"]').val();
+		// 				updateData.price = firstTd.nextAll('td[aria-describedby="commodity_list_price"]').find('input[name="price"]').val();
+		// 				updateData.beingsold = $("#"+ originalData[i].id +"_beingsold").get(0).checked	? '1' : '0';	
+		// 				console.log(updateData);
+		// 				jQuery(grid_selector).jqGrid('setGridParam', {
+		// 					ajaxRowOptions: {
+		// 						url: '/commodity/updateOne',
+		// 						mtype: 'POST',
+		// 						data: updateData,
+		// 						success: function(data){
+		// 							jQuery(grid_selector).trigger('reloadGrid');
+		// 						}
+		// 					}
+		// 				})
+		// 				jQuery.fn.fmatter.rowactions.call(this,'save');
+		// 			}
+		// 		}(i))
+		// 	}
+		// },
+		serializeEditData: function(postdata){
+			console.log(postdata);
+		},
+		editurl: "/commodity/updateOne",//nothing is saved
 		caption: "商品"
     })
 
@@ -141,9 +244,15 @@ jQuery(function($) {
     //switch element when editing inline
 	function aceSwitch( cellvalue, options, cell ) {
 		setTimeout(function(){
-			$(cell) .find('input[type=checkbox]')
+			if(cellvalue === '未授权') {
+				$(cell) .find('input[type=checkbox]')
 				.addClass('ace ace-switch ace-switch-5')
 				.after('<span class="lbl"></span>');
+			} else if(cellvalue === '已授权'){
+				$(cell) .find('input[type=checkbox]').attr('checked', true)
+				.addClass('ace ace-switch ace-switch-5')
+				.after('<span class="lbl"></span>');
+			}
 		}, 0);
 	}
 	//enable datepicker
@@ -215,7 +324,6 @@ jQuery(function($) {
 					console.log(data);
 				}
 			},
-			prmNames: { oper: null, id: null },
 			beforeShowForm : function(e) {
 				// console.log($(grid_selector).jqGrid('getGridParam', 'caption'));
 				var form = $(e[0]);
@@ -291,12 +399,25 @@ jQuery(function($) {
 
 	function style_edit_form(form) {
 		//enable datepicker on "sdate" field and switches for "stock" field
-		form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
-			.end().find('input[name=stock]')
-				.addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
+		// form.find('input[name=sdate]').datepicker({format:'yyyy-mm-dd' , autoclose:true})
+		// 	.end().find('input[name=stock]')
+		// 		.addClass('ace ace-switch ace-switch-5').after('<span class="lbl"></span>');
 				   //don't wrap inside a label element, the checkbox value won't be submitted (POST'ed)
 				  //.addClass('ace ace-switch ace-switch-5').wrap('<label class="inline" />').after('<span class="lbl"></span>');
-
+		var rowid = jQuery(grid_selector).jqGrid('getGridParam', 'selrow');
+		var curBeingsold = 0;
+		for(var i = 0; i < originalData.length; i += 1){
+			if(~~originalData[i].id === ~~rowid){	
+				curBeingsold = originalData[i].beingsold;
+				break;
+			}
+		}
+		//给beingsold字段启用switch样式，根据当前行的原始数据来确定状态
+		if(curBeingsold == 0){
+			form.find('input[name="beingsold"]').addClass('ace ace-switch ace-switch-5').attr('checked', false).after('<span class="lbl"></span>');
+		} else {
+			form.find('input[name="beingsold"]').addClass('ace ace-switch ace-switch-5').attr('checked', true).after('<span class="lbl"></span>')
+		}
 		//update buttons classes
 		var buttons = form.next().find('.EditButton .fm-button');
 		buttons.addClass('btn btn-sm').find('[class*="-icon"]').hide();//ui-icon, s-icon
@@ -408,26 +529,44 @@ jQuery(function($) {
 
 	//根据beingsold显示内容
 	function showBeingSold(cellvalue, options, rowObject){
-		var rowId = jQuery(grid_selector).jqGrid('getGridParam', 'selrow');
-		var rowData = jQuery(grid_selector).jqGrid('getRowData', rowId);
-		for(var i = 0; i < originalData.length; i += 1){
-			if(originalData[i].id == rowData.id){
-				rowData = originalData[i];
-				break;
-			}
-		}
+		var rowOriginalData = {};
 		var temp = '<span class="';
-		if(rowObject.beingsold === 0 || rowData.beingsold === 0){
-			temp += 'label label-danger arrowed-right">未授权</span>';
-		} else if(rowObject.beingsold === 1 || rowData.beingsold === 1){
-			temp += 'label label-success arrowed-right">已授权</span>';
-		}
-		return temp;
+		if(rowObject.id){
+			//是初始化，根据cellvalue处理
+			if(cellvalue === 0){
+				temp += 'label label-danger arrowed-right">未授权</span>';
+			} else {
+				temp += 'label label-success arrowed-right">已授权</span>';
+			}
+			return temp;
+		} else {
+			//不是初始化，cellvalue是一个label控件
+			return cellvalue;
+		}	
 	}
 
-	$(document).on('ajaxloadstart', function(e) {
-		$(grid_selector).jqGrid('GridUnload');
-		$('.ui-jqdialog').remove();
-	});
+	//表单编辑时，根据当前行的状态改变现实样式
+	function pgBtnChangeState(curBeingsold, form){
+		var inputBeingsold = form.find('input[name="beingsold"]');
+		var lastState = inputBeingsold.attr('checked');
+		if(curBeingsold === 0 && lastState){
+			inputBeingsold.trigger('click');
+			// inputBeingsold.attr('checked', false);
+			return;
+		}
+		if(curBeingsold === 1 && !lastState){
+			inputBeingsold.trigger('click');
+			// inputBeingsold.attr('checked', true);
+			return;
+		}
+		
+	}
+
+	$(document).on({
+		ajaxloadstart: function(e) {
+			$(grid_selector).jqGrid('GridUnload');
+			$('.ui-jqdialog').remove();
+		}
+	})
 
 })

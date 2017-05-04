@@ -25,14 +25,27 @@ router.get('/op1', function(req, res, next){
 })
 
 router.post('/getCommoditiesByPage', function(req, res, next){
+	console.log(req.body);
 	commodityServer.getCommoditiesByPage(req.body.currentPage, function(data){
 		res.send(data);
 	})
 });
 
 router.post('/addNewOne', function(req, res, next){
-	console.log(req.body);
 	commodityServer.addNewOne(req.body, function(data){
+		res.send(data);
+	})
+});
+
+router.post('/updateOne', function(req, res, next){
+	console.log(req.body);
+	commodityServer.updateOne(req.body, function(data){
+		res.send(data);
+	})
+});
+
+router.post('/deleteOne', function(req, res, next){
+	commodityServer.deleteOne(req.body, function(data){
 		res.send(data);
 	})
 })
