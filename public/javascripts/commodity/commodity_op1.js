@@ -165,22 +165,6 @@ jQuery(function($) {
 				enableTooltips(table);
 			}, 0);
 		},
-		// ajaxRowOptions: {
-		// 	url: '/commodity/updateOne',
-		// 	mtype: 'POST',
-		// 	// data: {
-		// 	// 	id: function(){
-		// 	// 		console.log($(grid_selector).find('tbody tr[editable="1"]'))
-		// 	// 		return 1;
-		// 	// 	},
-		// 	// 	name: '商品1',
-		// 	// 	beingsold: '0',
-		// 	// 	price: '123'
-		// 	// },
-		// 	success: function(data){
-		// 		jQuery(grid_selector).trigger('reloadGrid');
-		// 	}
-		// },
 		// // onSelectRow: function(rowid) {
 		// // 	// var currentRow = jQuery(grid_selector).jqGrid('getRowData', rowid);
 		// // 	// console.log($("#jCancelButton_1"), $("#jEditButton_1"))
