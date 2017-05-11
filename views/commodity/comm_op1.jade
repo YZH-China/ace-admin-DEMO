@@ -19,4 +19,27 @@ block main_content
 				div.row
 					table#commodity_list
 					div#commodity_page
-	script(src="http://127.0.0.1:3000/javascripts/commodity/commodity_op1.js")
+	div(tabindex="-1",role="dialog",).modal.fade#modal-auth
+		div.modal-dialog
+			div.modal-content
+				div.modal-header
+					button.bootbox-close-button.close(type="button", data-dismiss="modal") ×
+					h4.modal-title 授权操作
+					span 编号:
+						span.green#commodity_id
+						span &nbsp; 名称:
+						span.green#commodity_name
+				div.modal-body
+					div.row
+						div.col-xs-7
+							div#modal-success-body
+						div.col-xs-5#auth_checkbox
+							form.form-horizontal(role="form")
+				div.modal-footer.center#modal-success-footer
+					div.toolbar
+						a(href="#", role="button",data-dismiss="modal").btn.btn-success
+							i.ace-icon.fa.fa-check
+							| 确认授权
+						a(href="#", role="button", data-dismiss="modal").btn.btn-danger
+							i.ace-icon.fa.fa-times
+							| 取消

@@ -50,7 +50,7 @@ jQuery(function($) {
 	    	repeatitems: false
 	    },
 		height: 390,
-		colNames:[' ', 'ID','商品名', '单价', '状态'],
+		colNames:[' ', 'ID','商品名', '单价', '状态', ''],
 		colModel:[
 			{name:'myac',index:'', width:80, fixed:true, sortable:false, resize:false,
 				formatter:'actions', 
@@ -66,12 +66,12 @@ jQuery(function($) {
 						mtype: 'POST',
 						afterSubmit: function(xhr, postdata){
 							var callbackData = JSON.parse(xhr.responseText);
+							$(grid_selector).trigger('reloadGrid');
 							if(callbackData){
 								return [true, '删除成功！']
 							} else {
 								return [false, '刪除失败！']
 							}
-							jQuery(grid_selector).trigger('reloadGrid');
 						},
 						serializeDelData: function(postdata){
 							delete postdata.oper;
@@ -139,6 +139,13 @@ jQuery(function($) {
 			// {name:'sdate',index:'sdate',width:90, editable:true, sorttype:"date",unformat: pickDate},
 			{
 				name:'beingsold',index:'beingsold', editable: true, edittype:"checkbox",editoptions: {value:"1:0"}, unformat: aceSwitch, formatter: showBeingSold
+			},
+			{
+				name: 'custom_clo', index: 'custom_col', editable: false, width: 100, align: 'center', sortable: false,
+				formatter: function(cellvalue, options, rowObject) {
+					var strBtn = '<button data-origin="' + rowObject.id + '" class="btn btn-sm btn-primary" onclick="authHandle()">授权</button>';
+					return strBtn;
+				}
 			}
 			// {name:'ship',index:'ship', width:90, editable: true,edittype:"select",editoptions:{value:"FE:FedEx;IN:InTime;TN:TNT;AR:ARAMEX"}},
 			// {name:'note',index:'note', width:150, sortable:false,editable: true,edittype:"textarea", editoptions:{rows:"2",cols:"10"}} 
@@ -542,8 +549,7 @@ jQuery(function($) {
 			inputBeingsold.trigger('click');
 			// inputBeingsold.attr('checked', true);
 			return;
-		}
-		
+		}	
 	}
 
 	$(document).on({
@@ -554,3 +560,213 @@ jQuery(function($) {
 	})
 
 })
+
+var ops = {
+	lines: 13, // 花瓣数目
+	length: 20, // 花瓣长度
+	width: 10, // 花瓣宽度
+	radius: 30, // 花瓣距中心半径
+	corners: 1, // 花瓣圆滑度 (0-1)
+	rotate: 0, // 花瓣旋转角度
+	direction: 1, // 花瓣旋转方向 1: 顺时针, -1: 逆时针
+	color: '#5882FA', // 花瓣颜色
+	speed: 1, // 花瓣旋转速度
+	trail: 60, // 花瓣旋转时的拖影(百分比)
+	shadow: false, // 花瓣是否显示阴影
+	hwaccel: false, //spinner 是否启用硬件加速及高速旋转            
+	className: 'spinner', // spinner css 样式名称
+	zIndex: 2e9, // spinner的z轴 (默认是2000000000)
+	top: 'auto', // spinner 相对父容器Top定位 单位 px
+	left: 'auto'// spinner 相对父容器Left定位 单位 px
+}
+var spinner = new Spinner(ops);
+
+var DataSourceTree = function(options) {
+	this._data 	= options.data;
+	this._delay = options.delay;
+}
+
+DataSourceTree.prototype.data = function(options, callback) {
+	var self = this;
+	var $data = null;
+
+	if(!("name" in options) && !("type" in options)){
+		$data = this._data;//the root tree
+		callback({ data: $data });
+		return;
+	}
+	else if("type" in options && options.type == "folder") {
+		if("additionalParameters" in options && "children" in options.additionalParameters)
+			$data = options.additionalParameters.children;
+		else $data = {}//no data
+	}
+	
+	if($data != null)//this setTimeout is only for mimicking some random delay
+		setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+	//we have used static data here
+	//but you can retrieve your data dynamically from a server using ajax call
+	//checkout examples/treeview.html and examples/treeview.js for more info
+};
+
+var tree_data = {
+	
+	'for-sale' : {name: '销售管理', type: 'folder'}	,
+	'vehicles' : {name: 'Vehicles', type: 'folder'}	,
+	'rentals' : {name: 'Rentals', type: 'folder'}	,
+	'real-estate' : {name: 'Real Estate', type: 'folder'}	,
+	'pets' : {name: 'Pets', type: 'folder'}	,
+	'tickets' : {name: '角色管理', type: 'item', data: {name:"角色管理", opers: [{name: '新增', value: 0, oper: 'add'}, {name: '删除', value: 0, oper: 'del'}]}}	,
+	'services' : {name: 'Services', type: 'item'}	,
+	'personals' : {name: 'Personals', type: 'item'},
+	'DocumentManagement': {name: '文档管理', type: 'item', data: {name: '文档管理', opers: [{name: '操作1', value: 1, oper: 'oper1'}, {oper: 'oper2', name: '操作2', value: 1}]}},
+}
+tree_data['for-sale']['additionalParameters'] = {
+	'children' : {
+		'appliances' : {name: '销售人员管理', type: 'item', data: {name: '销售人员管理', opers: [{name: '新增', value: 0, oper: 'add'}, {name: '删除', value: 0, oper: 'del'}]}},
+		'arts-crafts' : {name: 'Arts & Crafts', type: 'item'},
+		'clothing' : {name: 'Clothing', type: 'item'},
+		'computers' : {name: 'Computers', type: 'item'},
+		'jewelry' : {name: 'Jewelry', type: 'item'},
+		'office-business' : {name: 'Office & Business', type: 'item'},
+		'sports-fitness' : {name: 'Sports & Fitness', type: 'item'}
+	}
+}
+tree_data['vehicles']['additionalParameters'] = {
+	'children' : {
+		'cars' : {name: 'Cars', type: 'folder'},
+		'motorcycles' : {name: 'Motorcycles', type: 'item'},
+		'boats' : {name: 'Boats', type: 'item'}
+	}
+}
+tree_data['vehicles']['additionalParameters']['children']['cars']['additionalParameters'] = {
+	'children' : {
+		'classics' : {name: 'Classics', type: 'item'},
+		'convertibles' : {name: 'Convertibles', type: 'item'},
+		'coupes' : {name: 'Coupes', type: 'item'},
+		'hatchbacks' : {name: 'Hatchbacks', type: 'item'},
+		'hybrids' : {name: 'Hybrids', type: 'item'},
+		'suvs' : {name: 'SUVs', type: 'item'},
+		'sedans' : {name: 'Sedans', type: 'item'},
+		'trucks' : {name: 'Trucks', type: 'item'}
+	}
+}
+
+tree_data['rentals']['additionalParameters'] = {
+	'children' : {
+		'apartments-rentals' : {name: 'Apartments', type: 'item'},
+		'office-space-rentals' : {name: 'Office Space', type: 'item'},
+		'vacation-rentals' : {name: 'Vacation Rentals', type: 'item'}
+	}
+}
+tree_data['real-estate']['additionalParameters'] = {
+	'children' : {
+		'apartments' : {name: 'Apartments', type: 'item'},
+		'villas' : {name: 'Villas', type: 'item'},
+		'plots' : {name: 'Plots', type: 'item'}
+	}
+}
+tree_data['pets']['additionalParameters'] = {
+	'children' : {
+		'cats' : {name: 'Cats', type: 'item'},
+		'dogs' : {name: 'Dogs', type: 'item'},
+		'horses' : {name: 'Horses', type: 'item'},
+		'reptiles' : {name: 'Reptiles', type: 'item'}
+	}
+}
+
+var treeDataSource = new DataSourceTree({data: tree_data});
+
+//授权按钮点击的处理函数
+function authHandle(e){
+	var event = e || window.event,
+		target = $(event.target);
+	var rowData = jQuery('#commodity_list').jqGrid('getRowData', target.data('origin'));
+	$("#modal-auth").on({
+		"shown.bs.modal": function(event){
+			var dialogDom = $(event.target).find(".modal-dialog");
+			dialogDom.append('<div id="mask" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, .4)"></div>')
+			$(event.target).css({
+				background: 'rgba(0, 0, 0, .4)',
+				transition: 'background .4s'
+			});
+			spinner.spin($('#mask'));
+			setTimeout(function(){
+				$("#modal-success-body").append('<div id="tree1" class="tree tree-selectable"></div>');
+				$('#tree1').ace_tree({
+					dataSource: treeDataSource,
+					multiSelect:false,
+					loadingHTML:'<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+					'open-icon' : 'ace-icon tree-minus',
+					'close-icon' : 'ace-icon tree-plus',
+					'selectable' : true,
+					'selected-icon' : 'ace-icon fa fa-check',
+					'unselected-icon' : 'ace-icon fa fa-times'
+				}).on({
+					updated: function(e, result){
+						console.log(e.type, result);
+						if(result.eventType === "selected"){
+							selectHandle(result.info[0].data)
+						} else {
+							unselectedHandle();
+						}
+					},
+					selected: function(e, data){
+						console.log(e.type, data);
+					},
+					loaded: function(e, data) {
+						console.log(e.type, data);
+						// $(data).children('div:first').trigger('click');
+					},
+					opened: function(e, data){
+						console.log(e.type, data);
+					},
+					closed: function(e, data) {
+						console.log(e.type, data);
+					}
+				})
+				$("#modal-success-body").css({
+					overflow: 'scroll',
+					height: function(){
+						return $("#modal-success-body").get(0).offsetHeight + 'px';
+					}
+				})
+				// $("#mask").remove("#mask");
+				spinner.spin();
+			}, 2000)
+			$(this).off('shown.bs.modal');
+		},
+		"hidden.bs.modal": function(event){
+			$("#tree1").remove('#tree1');
+			$("#auth_checkbox").find("form").empty();
+			$("#modal-success-body").css({
+				overflow: 'auto',
+				height: 'auto'
+			})
+			$(this).off('hidden.bs.modal');
+		}
+	})
+	.modal({
+		backdrop:false,
+		keyboard:false
+	}).find('#commodity_id').text(rowData.id).nextAll('#commodity_name').text(rowData.name)
+}
+
+function selectHandle(data) {
+	console.log(data);
+	$("#auth_checkbox").find('form').empty();
+	var warp_terget = $("#auth_checkbox");
+	for(var i = 0; i < data.opers.length; i += 1){
+		var strDom = '';
+		strDom += '<div class="form-group">';
+		strDom += '<label class="col-sm-4 control-label no-padding-right">'+ data.opers[i].name +':</label>';
+		strDom += '<div class="col-sm-8">';
+		strDom += '<label><input name="'+ data.opers[i].oper +'" class="ace ace-switch ace-switch-4" type="checkbox"><span class="lbl"></span>';
+		strDom += '</div></div>';
+		warp_terget.find('form').append(strDom);
+	}
+}
+
+function unselectedHandle() {
+	$("#auth_checkbox").find('form').empty();
+}
