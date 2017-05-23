@@ -16,15 +16,14 @@ var QueryMethod = {
 				return;
 			} else {
 				connection.query(sql, values, function(qerr, results){
-					//释放连接
-					connection.release();
 					if(qerr){
 						console.error(qerr);
 						return;
 					} else {
 						callback(results);
 					}
-					
+					//释放连接
+					connection.release();
 				})
 			}
 		})
