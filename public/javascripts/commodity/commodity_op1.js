@@ -35,6 +35,7 @@ jQuery(function($) {
         prmNames: {page:"currentPage", rows:null, sort: null,order: null, search: null, nd: null, npage:null},
         jsonReader: {
 	    	root: function(obj){
+	    		console.log(obj);
 				originalData = obj.rows;
 	    		return obj.rows;
 	    	},
